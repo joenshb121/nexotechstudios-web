@@ -1918,6 +1918,7 @@
     <nav class="fl" aria-label="Información legal">
       <a href="terminos-y-condiciones.html">Términos y Condiciones</a>
       <a href="aviso-de-privacidad.html">Aviso de Privacidad</a>
+      <a href="#" id="ckOpen">Preferencias de cookies</a>
     </nav>
     <div class="mu" style="margin-top:.6rem;font-size:.82rem">© 2026 NEXO TECH STUDIOS. Todos los derechos reservados.
     </div>
@@ -2193,6 +2194,58 @@
       if (reduce) return;
       new IntersectionObserver(([e]) => {run = e.isIntersecting; cancelAnimationFrame(raf); if (run) loop()}).observe(hero);
       document.addEventListener('visibilitychange', () => {run = !document.hidden; cancelAnimationFrame(raf); if (run) loop()});
+    })();
+  </script>
+  <!-- Banner de cookies + Google Analytics (solo se carga si la persona acepta) -->
+  <style>
+    #ck{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 1rem);z-index:80;width:min(560px,calc(100% - 2rem));translate:-50% 0;
+      display:none;gap:.9rem;align-items:center;flex-wrap:wrap;padding:1rem 1.1rem;border-radius:18px;background:rgba(23,20,17,.96);
+      border:1px solid rgba(216,195,160,.3);box-shadow:0 30px 60px -20px #000;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);font-size:.9rem;color:#CFC8B8}
+    #ck.on{display:flex;animation:slideUp .5s cubic-bezier(.22,1,.36,1) both}
+    #ck p{margin:0;flex:1 1 260px}
+    #ck a{color:var(--ch);text-decoration:underline}
+    #ck div{display:flex;gap:.5rem;margin-left:auto}
+    #ck button{font:inherit;cursor:pointer;border-radius:99px;padding:.5rem 1rem;border:1px solid rgba(216,195,160,.35);background:transparent;color:var(--tx)}
+    #ck button.ok{background:var(--ch);color:var(--k);border-color:var(--ch);font-weight:500}
+    @media(max-width:560px){#ck{bottom:calc(env(safe-area-inset-bottom,0px) + 4.6rem)}}
+  </style>
+  <div id="ck" role="dialog" aria-live="polite" aria-label="Preferencias de cookies">
+    <p>Usamos Google Analytics para saber cuántas personas visitan el sitio y qué les interesa. Solo se activa si aceptas.
+      <a href="aviso-de-privacidad.html#sec-8">Más información</a></p>
+    <div><button type="button" id="ckNo">Rechazar</button><button type="button" class="ok" id="ckYes">Aceptar</button></div>
+  </div>
+  <script>
+    (() => {
+      const GA_ID = ''; // ID de medición de Google Analytics (G-XXXXXXX). Vacío = sin analítica ni banner.
+      const KEY = 'nexo-cookies', $ = id => document.getElementById(id), box = $('ck');
+      const get = () => {try {return localStorage.getItem(KEY)} catch (e) {return null}};
+      const set = v => {try {localStorage.setItem(KEY, v)} catch (e) {}};
+      let loaded = false;
+      window.nexoTrack = () => {};
+      function load() {
+        if (loaded || !GA_ID) return; loaded = true;
+        const sc = document.createElement('script'); sc.async = true; sc.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID; document.head.append(sc);
+        window.dataLayer = window.dataLayer || []; window.gtag = function () {dataLayer.push(arguments)};
+        gtag('js', new Date()); gtag('config', GA_ID, {anonymize_ip: true});
+        window.nexoTrack = (ev, params) => gtag('event', ev, params || {});
+      }
+      if (!GA_ID) {$('ckOpen').hidden = true; return}
+      const c = get();
+      if (c === 'si') load(); else if (c !== 'no') box.classList.add('on');
+      $('ckYes').onclick = () => {set('si'); box.classList.remove('on'); load()};
+      $('ckNo').onclick = () => {set('no'); box.classList.remove('on')};
+      $('ckOpen').onclick = e => {e.preventDefault(); box.classList.add('on')};
+      // Eventos clave: qué lleva a pedir cotización
+      document.addEventListener('click', e => {
+        const a = e.target.closest('a'); if (!a) return;
+        const h = a.getAttribute('href') || '';
+        if (a.id === 'qa' || a.id === 'qe') nexoTrack('generate_lead', {metodo: a.id === 'qa' ? 'whatsapp' : 'correo', servicio: ($('qs') || {}).value || ''});
+        else if (h.startsWith('https://wa.me')) nexoTrack('contacto_whatsapp', {ubicacion: a.id === 'wa' ? 'boton_flotante' : 'contacto'});
+        else if (h.startsWith('mailto:')) nexoTrack('contacto_correo');
+        else if (h.startsWith('tel:')) nexoTrack('contacto_telefono');
+        else if (h.startsWith('proyectos/')) nexoTrack('abrir_demo', {demo: h.replace('proyectos/', '').replace('.html', '')});
+        else if (h === '#cotizador') nexoTrack('ir_a_cotizar', {servicio: a.dataset.svc || ''});
+      }, true);
     })();
   </script>
 </body>
