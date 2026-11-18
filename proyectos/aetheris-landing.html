@@ -6,15 +6,6 @@
 <title>Aetheris — Espacio de trabajo neuronal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com/3.4.17"></script>
-
-<!-- ═════════ BLOQUE 1 · CONFIGURACIÓN TAILWIND ═════════ -->
-<script>
-tailwind.config = { theme: { extend: {
-  colors: { void:'#050505', ink:'#0b0b10', neon:'#7c3aed', glow:'#a78bfa', ice:'#38bdf8' },
-  fontFamily: { display:['"Space Grotesk"','Inter','system-ui','sans-serif'], sans:['Inter','system-ui','sans-serif'] }
-}}};
-</script>
 
 <!-- ═════════ BLOQUE 2 · CSS PERSONALIZADO ═════════ -->
 <style>
@@ -51,6 +42,8 @@ input::placeholder{color:#6b6b7a}
 #note{max-height:5rem}
 @media (prefers-reduced-motion:reduce){.scroll-line::after,.dots span{animation:none}}
 </style>
+<!-- Tailwind compilado una sola vez (fuente: _fuentes/aetheris-tailwind, comando: npm run build) -->
+<link rel="stylesheet" href="aetheris.css">
 </head>
 <body>
 <!-- Acceso de regreso a NEXO (igual que en la demo de comandas) -->
