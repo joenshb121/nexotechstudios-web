@@ -1890,7 +1890,7 @@
         <h2>Cuéntanos qué quieres resolver.</h2>
         <p class="mu" style="max-width:34rem;margin-left:auto;margin-right:auto">Te respondemos con una propuesta por escrito: alcance, tiempos y precio, antes de que pagues nada.</p>
         <div class="ct"><a class="btn bg" href="https://wa.me/525564331354" target="_blank" rel="noopener">Escribir por
-            WhatsApp</a><a class="btn" href="mailto:nexotechstudios@hotmail.com">nexotechstudios@hotmail.com</a></div>
+            WhatsApp</a><a class="btn" href="mailto:business@nexotechstudios.com">business@nexotechstudios.com</a></div>
         <a class="t" href="tel:+525564331354">55 6433 1354</a>
         <div class="q">
           <h3 style="font-size:2rem;text-align:center" id="cotizador">Arma tu cotización.</h3>
@@ -1977,7 +1977,7 @@
     /* Cotizador */
     const sel = $('qs'); sel.innerHTML = Object.values(SV).map(v => `<option>${v}</option>`).join('');
     function msg() {return [`Hola, soy ${$('qn').value.trim() || '(mi nombre)'}.`, `Quiero cotizar: ${sel.value}.`, $('qb').value.trim() && `Mi negocio: ${$('qb').value.trim()}.`, $('qd').value.trim() && `Detalles: ${$('qd').value.trim()}`, '¿Me compartes una propuesta?'].filter(Boolean).join('\n')}
-    function build() {$('qa').href = 'https://wa.me/525564331354?text=' + encodeURIComponent(msg()); $('qe').href = 'mailto:nexotechstudios@hotmail.com?subject=' + encodeURIComponent('Cotización: ' + sel.value) + '&body=' + encodeURIComponent(msg())}
+    function build() {$('qa').href = 'https://wa.me/525564331354?text=' + encodeURIComponent(msg()); $('qe').href = 'mailto:business@nexotechstudios.com?subject=' + encodeURIComponent('Cotización: ' + sel.value) + '&body=' + encodeURIComponent(msg())}
     document.querySelectorAll('.q input,.q textarea,.q select').forEach(e => e.addEventListener('input', build)); build();
     [$('qa'), $('qe')].forEach(a => a.addEventListener('click', e => {const m = $('qm'); if ($('qn').value.trim().length < 2) {e.preventDefault(); m.textContent = 'Escribe tu nombre para saber con quién hablar.'; m.style.color = '#E0907A'; $('qn').focus(); return } build(); m.style.color = 'var(--ok)'; m.textContent = 'Abriendo tu cotización lista para enviar.'}));
     document.addEventListener('click', e => {const a = e.target.closest('[data-svc]'); if (a) {sel.value = a.dataset.svc; build()} });
