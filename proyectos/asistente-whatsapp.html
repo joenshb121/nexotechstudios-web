@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Estética Alma · Asistente de WhatsApp — Demo de NEXO TECH STUDIOS</title>
+<meta name="description" content="Demo interactiva de un asistente de WhatsApp que entiende cómo escribe la gente, responde, cotiza y agenda citas. Creada por NEXO TECH STUDIOS.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#eef2f0;--ink:#16302a;--mu:#5e716c;--sg:#2f7564;--sg2:#d5e7e1;--card:#fff;--line:#dde5e2;
+    --wa:#efeae2;--in:#fff;--out:#d9fdd3;color-scheme:light}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Figtree,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  button,input{font:inherit;color:inherit}
+  :focus-visible{outline:2px solid var(--sg);outline-offset:2px}
+  .w{max-width:1180px;margin:0 auto;padding:clamp(16px,3vw,32px);display:grid;gap:24px;grid-template-columns:minmax(0,400px) minmax(0,1fr);align-items:start}
+  .intro{grid-column:1/-1;animation:up .6s cubic-bezier(.22,1,.36,1) both}
+  .intro h1{margin:0;font-size:clamp(1.4rem,3vw,2rem);line-height:1.15}
+  .intro p{margin:6px 0 0;color:var(--mu);max-width:62ch}
+  .try{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+  .try button{border:1px dashed #9cc4b8;background:transparent;border-radius:14px;padding:4px 10px;font-size:.85rem;color:var(--sg);cursor:pointer}
+  .try button:hover{background:#e3efeb}
+  /* Teléfono */
+  .ph{background:#111;border-radius:40px;padding:10px;box-shadow:0 30px 60px -30px rgba(22,48,42,.5);position:sticky;top:16px;animation:up .7s .1s cubic-bezier(.22,1,.36,1) both}
+  .scr{border-radius:31px;overflow:hidden;display:flex;flex-direction:column;height:min(720px,calc(100svh - 52px));min-height:520px;background:var(--wa)}
+  .bar{display:flex;align-items:center;gap:10px;padding:16px 16px 12px;background:#075e54;color:#fff}
+  .av{width:38px;height:38px;border-radius:50%;background:var(--sg2);color:var(--sg);display:grid;place-items:center;font-weight:700;flex:none}
+  .bar small{display:block;opacity:.8;font-size:.78rem;min-height:1.2em}
+  .msgs{flex:1;overflow-y:auto;padding:14px 12px;display:flex;flex-direction:column;gap:6px;scroll-behavior:smooth}
+  .m{max-width:82%;padding:7px 10px 8px;border-radius:10px;background:var(--in);box-shadow:0 1px 1px rgba(0,0,0,.08);white-space:pre-line;font-size:.93rem;
+    animation:pop .32s cubic-bezier(.3,1.4,.5,1) both;transform-origin:left bottom}
+  .m.me{align-self:flex-end;background:var(--out);transform-origin:right bottom}
+  .m time{display:block;text-align:right;font-size:.68rem;color:var(--mu);margin-top:2px}
+  .m time b{color:#53bdeb;font-weight:400;margin-left:3px}
+  .ty{display:flex;gap:4px;padding:12px 14px}
+  .ty i{width:7px;height:7px;border-radius:50%;background:#9aa7a3;animation:dot 1s infinite}
+  .ty i:nth-child(2){animation-delay:.15s}.ty i:nth-child(3){animation-delay:.3s}
+  @keyframes dot{0%,60%,100%{transform:none;opacity:.5}30%{transform:translateY(-4px);opacity:1}}
+  @keyframes pop{from{opacity:0;transform:scale(.85) translateY(6px)}}
+  @keyframes up{from{opacity:0;transform:translateY(14px)}}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 12px 8px}
+  .chips button{border:1px solid #b9d8cf;background:#fff;color:#075e54;border-radius:16px;padding:6px 12px;cursor:pointer;font-size:.86rem;animation:pop .3s both;animation-delay:calc(var(--i)*50ms)}
+  .chips button:hover{background:#f0faf6}
+  form{display:flex;gap:8px;padding:8px 10px 12px;background:#f0f0f0}
+  form input{flex:1;min-width:0;border:0;border-radius:22px;padding:10px 14px;background:#fff}
+  form button{border:0;border-radius:50%;width:42px;height:42px;background:#00a884;color:#fff;cursor:pointer;flex:none;transition:transform .15s}
+  form button:active{transform:scale(.9)}
+  /* Panel del negocio */
+  .pn{display:grid;gap:16px;min-width:0}
+  .pn>*{animation:up .6s cubic-bezier(.22,1,.36,1) both;animation-delay:calc(var(--i,0)*80ms + 150ms)}
+  .card{background:var(--card);border-radius:18px;padding:18px 20px;box-shadow:0 1px 3px rgba(22,48,42,.06);min-width:0}
+  .card h2{margin:0 0 12px;font-size:1rem}
+  .ks{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .ks div{background:var(--card);border-radius:18px;padding:14px 18px;box-shadow:0 1px 3px rgba(22,48,42,.06)}
+  .ks small{color:var(--mu);font-size:.82rem}
+  .ks b{display:block;font-size:1.7rem;font-variant-numeric:tabular-nums;transition:color .5s}
+  .ks b.flash{color:var(--sg)}
+  .days{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+  .days h3{margin:0 0 8px;font-size:.9rem;text-transform:capitalize}
+  .days ol{list-style:none;margin:0;padding:0;display:grid;gap:5px}
+  .days li{display:flex;gap:8px;font-size:.82rem;padding:5px 8px;border-radius:8px;background:#f5f8f7;color:var(--mu);transition:background .4s}
+  .days li b{font-weight:500;color:var(--ink);width:3.2em;flex:none}
+  .days li.bk{background:#e9eeec}
+  .days li.nw{background:var(--sg);color:#fff;animation:land .9s cubic-bezier(.3,1.4,.5,1)}
+  .days li.nw b{color:#fff}
+  @keyframes land{0%{transform:scale(1.15);box-shadow:0 0 0 0 rgba(47,117,100,.6)}100%{transform:none;box-shadow:0 0 0 14px transparent}}
+  .log{list-style:none;margin:0;padding:0;display:grid;gap:10px;font-size:.88rem;max-height:260px;overflow:auto}
+  .log li{display:flex;gap:10px;animation:up .4s ease-out both}
+  .log time{color:var(--mu);flex:none;font-variant-numeric:tabular-nums}
+  .log .empty{color:var(--mu)}
+  .log q{display:block;color:var(--mu);font-size:.82rem;quotes:"«" "»"}
+  .tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:3px}
+  .tags span{font-size:.72rem;background:var(--sg2);color:var(--sg);border-radius:6px;padding:1px 7px}
+  .note{font-size:.85rem;color:var(--mu)}
+  .note a{color:var(--sg);font-weight:700}
+  @media(max-width:860px){.w{grid-template-columns:1fr}.ph{position:static;max-width:420px;margin:0 auto;width:100%}.scr{height:600px}}
+  @media(max-width:560px){.ks b{font-size:1.35rem}.ks{gap:8px}.ks div{padding:12px}.ph{border-radius:32px;padding:7px}.scr{border-radius:26px;height:560px}}
+  @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main class="w">
+  <div class="intro">
+    <h1>Escríbele a Estética Alma como si fueras su cliente.</h1>
+    <p>Escribe como lo harías en WhatsApp, con prisa, abreviaturas o faltas de ortografía. En el panel verás lo que entendió el asistente y cómo se llena la agenda del negocio.</p>
+    <div class="try" id="try" aria-label="Ejemplos para probar">
+      <button type="button">kiero un masajito pa mñn en la tarde</button>
+      <button type="button">cuanto sale la depilasion</button>
+      <button type="button">ke onda, a q ora abren el sabado?</button>
+      <button type="button">me agendas facial el viernes a las 12? soy Caro</button>
+    </div>
+  </div>
+
+  <section class="ph" aria-label="Chat de WhatsApp de ejemplo">
+    <div class="scr">
+      <div class="bar"><div class="av" aria-hidden="true">A</div><div>Estética Alma<small id="st">en línea</small></div></div>
+      <div class="msgs" id="msgs" aria-live="polite"></div>
+      <div class="chips" id="chips"></div>
+      <form id="f" autocomplete="off"><input id="t" placeholder="Escribe un mensaje" aria-label="Mensaje" maxlength="200"><button aria-label="Enviar">➤</button></form>
+    </div>
+  </section>
+
+  <section class="pn" aria-label="Panel del negocio">
+    <div class="ks" style="--i:0">
+      <div><small>Mensajes respondidos</small><b id="kM">0</b></div>
+      <div><small>Citas agendadas</small><b id="kC">0</b></div>
+      <div><small>Tiempo de respuesta</small><b>2 s</b></div>
+    </div>
+    <div class="card" style="--i:1"><h2>Agenda de Estética Alma</h2><div class="days" id="days"></div></div>
+    <div class="card" style="--i:2"><h2>Lo que entendió y lo que hizo</h2><ul class="log" id="log"><li class="empty">Escribe en el chat para empezar.</li></ul></div>
+    <p class="note" style="--i:3">Demo simulada: este asistente funciona sin internet con reglas de lenguaje (entiende modismos, abreviaturas y errores de dedo). En un proyecto real se conecta a un modelo de IA, a tu catálogo y a tu agenda, a través de la API oficial de WhatsApp. Estética Alma es una marca de concepto.<br>
+      Demo de NEXO TECH STUDIOS · <a href="../index.html#contacto">¿Quieres un asistente así para tu negocio?</a></p>
+  </section>
+</main>
+
+<script>
+/* ---------- Comprensión del lenguaje: normaliza, corrige y detecta intención y datos ---------- */
+const NLU = (() => {
+  const SV = [['Limpieza facial', 650, '60 min', ['facial', 'limpieza', 'cara', 'acne', 'puntos', 'rostro', 'hidratacion']],
+    ['Depilación láser', 900, '30 min', ['depilacion', 'depilar', 'laser', 'vello', 'axila', 'bigote', 'piernas']],
+    ['Masaje relajante', 750, '60 min', ['masaje', 'masajito', 'masajes', 'relajante', 'espalda', 'contractura', 'estres']],
+    ['Manicure gel', 380, '45 min', ['manicure', 'manicura', 'unas', 'gel', 'manos', 'acrilico', 'acrilicas']]];
+  // Abreviaturas y modismos → palabra estándar
+  const ABR = {q: 'que', k: 'que', ke: 'que', qe: 'que', xq: 'porque', pq: 'porque', porq: 'porque', x: 'por', pa: 'para', pal: 'para el', tmb: 'tambien', tb: 'tambien',
+    pls: 'porfavor', plis: 'porfavor', porfa: 'porfavor', xfa: 'porfavor', porfis: 'porfavor', grax: 'gracias', grs: 'gracias', grcs: 'gracias', thx: 'gracias', thanks: 'gracias', gracia: 'gracias',
+    dnd: 'donde', dond: 'donde', cdo: 'cuando', mnn: 'manana', mna: 'manana', mnna: 'manana', mñn: 'manana', mañn: 'manana', hrs: 'horas', hr: 'hora', ora: 'hora', oras: 'horas', msj: 'mensaje',
+    ola: 'hola', hla: 'hola', holi: 'hola', holis: 'hola', wenas: 'buenas', wenos: 'buenos', quiubo: 'hola', quibo: 'hola', qiubo: 'hola', kiubo: 'hola', hey: 'hola', buen: 'buenas',
+    sta: 'esta', ta: 'esta', stan: 'estan', tons: 'entonces', entons: 'entonces', ps: 'pues', pz: 'pues', nel: 'no', nop: 'no', nopo: 'no',
+    simon: 'si', sip: 'si', sep: 'si', sii: 'si', va: 'si', vale: 'si', ok: 'si', oki: 'si', okey: 'si', orale: 'si', dale: 'si', claro: 'si', chido: 'si', perfecto: 'si',
+    kiero: 'quiero', kero: 'quiero', qiero: 'quiero', quero: 'quiero', kisiera: 'quisiera', bno: 'bueno', ntp: 'no te preocupes', tqm: 'gracias',
+    lana: 'precio', varo: 'precio', baro: 'precio', feria: 'precio', sab: 'sabado', vie: 'viernes', mier: 'miercoles', jue: 'jueves', mar: 'martes', lun: 'lunes', dom: 'domingo'};
+  const INT = { // intención: palabras clave (se comparan con tolerancia a errores)
+    agendar: ['cita', 'citas', 'agendar', 'agenda', 'agendas', 'agendame', 'agendo', 'reservar', 'reserva', 'reservame', 'apartar', 'apartame', 'aparta', 'turno', 'agendas', 'agendarme'],
+    quiero: ['quiero', 'quisiera', 'ocupo', 'necesito', 'lugar', 'espacio', 'chance', 'disponible', 'disponibilidad', 'puedo', 'ir'],
+    precio: ['precio', 'precios', 'costo', 'costos', 'cuesta', 'cuestan', 'cobran', 'cuanto', 'tarifa', 'tarifas', 'presupuesto', 'cotizar', 'cotizacion', 'promocion', 'promo', 'promos', 'descuento', 'paquete'],
+    horario: ['horario', 'horarios', 'abren', 'cierran', 'abierto', 'abiertos', 'atienden', 'trabajan'],
+    ubicacion: ['donde', 'ubicacion', 'direccion', 'llegar', 'ubicados', 'ubican', 'mapa', 'estacionamiento', 'sucursal', 'local'],
+    persona: ['persona', 'humano', 'asesor', 'asesora', 'alguien', 'encargada', 'encargado', 'llamar', 'hablar', 'gerente', 'dueña'],
+    pago: ['tarjeta', 'efectivo', 'transferencia', 'pago', 'pagar', 'pagos', 'meses'],
+    duracion: ['dura', 'tarda', 'duracion', 'tiempo'],
+    cancelar: ['cancelar', 'cancela', 'cancelo', 'reagendar', 'cambiar', 'mover', 'recorrer'],
+    gracias: ['gracias'],
+    saludo: ['hola', 'buenas', 'buenos', 'onda', 'saludos'],
+    adios: ['adios', 'bye', 'luego', 'vemos', 'cuidate'],
+    si: ['si'], no: ['no']};
+  const DAYS = ['domingo', 'lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
+  const VOCAB = new Set([...Object.values(INT).flat(), ...SV.flatMap(s => s[3]), ...DAYS, 'manana', 'pasado', 'hoy', 'tarde', 'temprano', 'noche', 'mediodia', 'cualquiera', 'sea']);
+
+  function dist(a, b) { // Damerau-Levenshtein: cuenta letras cambiadas, faltantes, sobrantes o volteadas
+    const d = Array.from({length: a.length + 1}, (_, i) => [i, ...Array(b.length).fill(0)]);
+    for (let j = 1; j <= b.length; j++) d[0][j] = j;
+    for (let i = 1; i <= a.length; i++) for (let j = 1; j <= b.length; j++) {
+      d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+      if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1);
+    }
+    return d[a.length][b.length];
+  }
+  const sound = w => w.replace(/z/g, 's').replace(/c([ei])/g, 's$1').replace(/v/g, 'b').replace(/y([aeiou])/g, 'll$1').replace(/h/g, '').replace(/qu/g, 'k').replace(/c([aou])/g, 'k$1');
+  function fix(w) { // corrige una palabra contra el vocabulario
+    if (VOCAB.has(w) || w.length < 4 || /\d/.test(w)) return w;
+    const short = w.length < 5; // palabras cortas: solo si suenan igual (sita → cita), para no confundir casa con cara
+    const ws = sound(w); let best = w, bd = 9;
+    for (const v of VOCAB) {
+      if (Math.abs(v.length - w.length) > 2) continue;
+      const d = sound(v) === ws ? 0 : short ? 9 : dist(w, v);
+      if (d < bd) {bd = d; best = v}
+    }
+    return bd <= (w.length >= 7 ? 2 : 1) ? best : w;
+  }
+  function norm(raw) {
+    let s = raw.toLowerCase().replace(/ñ/g, 'ñ').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ñ/g, 'n');
+    s = s.replace(/([a-z])\1{2,}/g, '$1').replace(/[¿?¡!.,;"'()]/g, ' ').replace(/\bq onda\b|\bk onda\b|\bke onda\b/g, 'hola');
+    let w = s.split(/\s+/).filter(Boolean).map(x => ABR[x] ?? x).join(' ').split(' ');
+    w = w.map(x => {const y = x.replace(/([a-z])\1/g, '$1'); return VOCAB.has(x) || !VOCAB.has(y) ? x : y}); // "holaa" → "hola"
+    return w.map(fix);
+  }
+  function parse(raw, today = new Date()) {
+    const w = norm(raw), r = {words: w, intents: []};
+    const s = (' ' + w.join(' ') + ' ').replace(/ buen[oa]s? (tarde|dia|noche)s? /g, ' hola '); // el saludo no es un horario
+    for (const [k, L] of Object.entries(INT)) if (w.some(x => L.includes(x))) r.intents.push(k);
+    if (s.includes(' que onda ') || s.includes(' que tal ')) r.intents.push('saludo');
+    if (r.intents.includes('precio') && s.includes(' cuanto ') && s.includes(' tarda ')) r.intents = r.intents.filter(x => x !== 'precio');
+    if (/ a que hora (abren|cierran|atienden|esta abierto)/.test(s)) r.intents.push('horario');
+    // servicio
+    const si = SV.findIndex(v => v[3].some(k => w.includes(k))); if (si >= 0) r.sv = si;
+    // día
+    const t0 = new Date(today); t0.setHours(0, 0, 0, 0);
+    const plus = n => {const x = new Date(t0); x.setDate(x.getDate() + n); return x};
+    if (s.includes(' pasado manana ')) r.day = plus(2);
+    else if (/ manana /.test(s.replace(/ (en|por|de) la manana /g, ' '))) r.day = plus(1);
+    else if (s.includes(' hoy ')) r.day = plus(0);
+    else {const di = DAYS.findIndex(d => w.includes(d)); if (di >= 0) {let n = (di - t0.getDay() + 7) % 7 || 7; r.day = plus(n)}}
+    // hora
+    const m = s.match(/(?:a las|alas|las|a la|tipo|como a las|\s)\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm|hrs|horas|de la tarde|de la manana|de la noche)?\s/);
+    if (m) {
+      let h = +m[1]; const suf = m[3] || '';
+      if (/pm|tarde|noche/.test(suf) && h < 12) h += 12; else if (!/am|manana/.test(suf) && h >= 1 && h <= 8) h += 12;
+      if (h >= 0 && h <= 23 && (m[0].includes('las') || m[0].includes('la ') || suf || m[2])) r.hour = h;
+    }
+    if (r.hour == null) {
+      if (s.includes(' mediodia ')) r.hour = 12;
+      else if (/ (en|por|de) la tarde /.test(s) || s.includes(' tarde ')) r.part = 'tarde';
+      else if (/ (en|por|de) la manana /.test(s) || s.includes(' temprano ')) r.part = 'manana';
+      else if (s.includes(' cualquiera ') || s.includes(' la que sea ')) r.part = 'any';
+    }
+    // nombre
+    const n = raw.match(/(?:soy|me llamo|mi nombre es|a nombre de|aombre de)\s+([a-záéíóúñü]+(?:\s+[a-záéíóúñü]+)?)/i);
+    if (n) r.name = n[1].replace(/\b\w/g, c => c.toUpperCase());
+    return r;
+  }
+  return {parse, norm, SV, DAYS};
+})();
+
+/* ---------- Conversación y agenda ---------- */
+(() => {
+  const $ = id => document.getElementById(id), {SV} = NLU;
+  const HRS = [10, 11, 12, 13, 15, 16, 17, 18, 19];
+  const fmt = x => '$' + x.toLocaleString('es-MX'), now = () => new Date().toLocaleTimeString('es-MX', {hour: '2-digit', minute: '2-digit'});
+  const D = []; for (let d = new Date(), i = 1; D.length < 6; i++) {const x = new Date(d); x.setDate(d.getDate() + i); x.setHours(0, 0, 0, 0); if (x.getDay()) D.push(x)}
+  const NAMES = ['Sofía R.', 'Daniela M.', 'Lucía P.', 'Ana G.', 'Paola T.', 'Fer C.'];
+  const B = D.map((_, di) => Object.fromEntries(HRS.filter((h, hi) => (hi * 3 + di * 2) % 5 === 0).map((h, k) => [h, {who: NAMES[(di + k) % 6]}])));
+  const dl = d => d.toLocaleDateString('es-MX', {weekday: 'long', day: 'numeric', month: 'short'});
+  const free = di => HRS.filter(h => !B[di][h]);
+  let ctx = {}, last = null, nM = 0, nC = 0;
+
+  function agenda() {
+    $('days').innerHTML = D.map((d, di) => (di < 3 || HRS.some(h => B[di][h]?.nw)) ? `<div><h3>${dl(d)}</h3><ol>${HRS.map(h => {const b = B[di][h];
+      return `<li class="${b ? (b.nw ? 'nw' : 'bk') : ''}"><b>${h}:00</b>${b ? (b.nw ? 'Nueva · ' : '') + b.who + (b.sv ? ' · ' + b.sv : '') : 'Libre'}</li>`}).join('')}</ol></div>` : '').join('');
+  }
+  function flash(id, v) {const e = $(id); e.textContent = v; e.classList.add('flash'); setTimeout(() => e.classList.remove('flash'), 900)}
+  function log(html) {const l = $('log'); l.querySelector('.empty')?.remove(); l.insertAdjacentHTML('afterbegin', `<li><time>${now()}</time><div>${html}</div></li>`)}
+  const esc = t => t.replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
+  function msg(t, me) {
+    const m = document.createElement('div'); m.className = 'm' + (me ? ' me' : ''); m.textContent = t;
+    m.insertAdjacentHTML('beforeend', `<time>${now()}${me ? '<b>✓✓</b>' : ''}</time>`); $('msgs').append(m); $('msgs').scrollTop = 1e6; return m;
+  }
+  function chips(L) {$('chips').innerHTML = L.map((c, i) => `<button type="button" style="--i:${i}">${esc(c)}</button>`).join('')}
+  const MENU = ['Precios', 'Agendar cita', 'Horarios', '¿Dónde están?'];
+  let queue = Promise.resolve();
+  function bot(t, ch = []) {
+    queue = queue.then(() => new Promise(res => {
+      const ty = document.createElement('div'); ty.className = 'm ty'; ty.innerHTML = '<i></i><i></i><i></i>'; $('msgs').append(ty); $('msgs').scrollTop = 1e6;
+      $('st').textContent = 'escribiendo…'; chips([]);
+      setTimeout(() => {ty.remove(); $('st').textContent = 'en línea'; msg(t); chips(ch); flash('kM', ++nM); res()}, 650 + Math.min(t.length * 7, 900));
+    }));
+  }
+  const svList = () => SV.map(v => `• ${v[0]} (${v[2]}): ${fmt(v[1])}`).join('\n');
+  const dayIdx = d => D.findIndex(x => x.getTime() === d.getTime());
+
+  function nextStep() { // pide el dato que falte para agendar
+    if (ctx.sv == null) return bot('¡Claro! ¿Qué servicio te gustaría?', SV.map(v => v[0]));
+    if (ctx.day == null) return bot(`${SV[ctx.sv][0]} dura ${SV[ctx.sv][2]} y cuesta ${fmt(SV[ctx.sv][1])}. ¿Qué día te acomoda?`, D.slice(0, 3).map(dl));
+    const f = free(ctx.day);
+    if (ctx.hour == null && ctx.part) {
+      const pick = ctx.part === 'tarde' ? f.find(h => h >= 15) : ctx.part === 'manana' ? f.find(h => h < 13) : f[0];
+      ctx.part = null;
+      if (pick) ctx.hour = pick; else return bot(`Ese ${dl(D[ctx.day])} ya no tengo lugar en ese horario. Tengo libre:`, f.slice(0, 6).map(h => h + ':00'));
+    }
+    if (ctx.hour == null) return bot(`El ${dl(D[ctx.day])} tengo libre a estas horas:`, f.slice(0, 6).map(h => h + ':00'));
+    if (!HRS.includes(ctx.hour) || B[ctx.day][ctx.hour]) {
+      const h = ctx.hour; ctx.hour = null;
+      return bot(h < 10 || h > 19 ? `Atendemos de 10:00 a 20:00. El ${dl(D[ctx.day])} tengo libre:` : `Uy, a las ${h}:00 ya está ocupado. El ${dl(D[ctx.day])} tengo libre:`, f.slice(0, 6).map(x => x + ':00'));
+    }
+    if (!ctx.name) return bot(`Te aparto el ${dl(D[ctx.day])} a las ${ctx.hour}:00. ¿A nombre de quién registro la cita?`);
+    // agenda la cita
+    B[ctx.day][ctx.hour] = {who: ctx.name, sv: SV[ctx.sv][0], nw: true}; agenda(); flash('kC', ++nC);
+    last = {...ctx};
+    log(`<b>Agendó</b> ${SV[ctx.sv][0]} para ${esc(ctx.name)}, ${dl(D[ctx.day])} a las ${ctx.hour}:00, y programó un recordatorio un día antes.`);
+    bot(`¡Listo, ${ctx.name}! Tu cita de ${SV[ctx.sv][0]} quedó el ${dl(D[ctx.day])} a las ${ctx.hour}:00.\nTe mando un recordatorio un día antes. ¿Te ayudo con algo más?`, MENU);
+    ctx = {};
+  }
+
+  function reply(raw) {
+    const r = NLU.parse(raw), I = new Set(r.intents);
+    const tags = [...r.intents.filter(x => !['si', 'no'].includes(x)), r.sv != null && SV[r.sv][0], r.day && dl(r.day), r.hour != null && r.hour + ':00', r.part && 'por la ' + r.part.replace('manana', 'mañana'), r.name && 'nombre: ' + r.name].filter(Boolean);
+    log(`<q>${esc(raw)}</q><span class="tags">${(tags.length ? tags : ['sin datos claros']).map(t => `<span>${esc(t)}</span>`).join('')}</span>`);
+
+    // Datos sueltos dentro de un agendado en curso
+    if (ctx.active) {
+      if (I.has('no') && !r.sv && !r.day && r.hour == null) {ctx = {}; return bot('Va, lo dejamos así. ¿Te ayudo con otra cosa?', MENU)}
+      if (r.sv != null) ctx.sv = r.sv;
+      if (r.day) {const i = dayIdx(r.day); if (i < 0) return bot(r.day.getDay() === 0 ? 'Los domingos descansamos. ¿Te late otro día?' : 'Para ese día ya no tengo agenda abierta. Tengo lugar estos días:', D.slice(0, 3).map(dl)); ctx.day = i; ctx.hour = null}
+      if (r.hour != null) ctx.hour = r.hour; if (r.part) ctx.part = r.part; if (r.name) ctx.name = r.name;
+      if (ctx.sv != null && ctx.day != null && ctx.hour != null && !ctx.name && !r.name && r.sv == null && !r.day && r.hour == null && !r.part && !['si', 'no', 'saludo', 'gracias'].some(x => I.has(x))) {
+        ctx.name = raw.trim().replace(/^(soy|me llamo)\s+/i, '').slice(0, 30).replace(/\b\w/g, c => c.toUpperCase()) || 'Cliente';
+      }
+      if (I.has('precio') && r.sv == null && ctx.sv == null) return bot('Estos son nuestros precios:\n' + svList() + '\n\n¿Cuál te agendo?', SV.map(v => v[0]));
+      return nextStep();
+    }
+    if (I.has('cancelar')) {
+      if (!last) return bot('No encuentro una cita a tu nombre en este chat. Si quieres, te agendo una nueva.', ['Agendar cita']);
+      delete B[last.day][last.hour]; agenda(); flash('kC', --nC); log(`<b>Liberó</b> el horario de ${esc(last.name)} (${dl(D[last.day])}, ${last.hour}:00).`);
+      ctx = {active: true, sv: last.sv, name: last.name}; last = null;
+      return bot('Listo, liberé tu horario. ¿Para qué día te la cambio?', D.slice(0, 3).map(dl));
+    }
+    const other = ['precio', 'duracion', 'horario', 'ubicacion', 'pago', 'persona'].some(x => I.has(x));
+    if (I.has('agendar') || (!other && (I.has('quiero') || r.sv != null || r.day || r.hour != null))) {
+      ctx = {active: true, sv: r.sv, name: r.name, hour: r.hour, part: r.part};
+      if (r.day) {const i = dayIdx(r.day); if (i < 0) {ctx.day = null; return bot(r.day.getDay() === 0 ? 'Los domingos descansamos, pero con gusto te agendo otro día. ¿Cuál te acomoda?' : 'Hoy ya no tengo lugar. ¿Te acomoda alguno de estos días?', D.slice(0, 3).map(dl))} ctx.day = i}
+      return nextStep();
+    }
+    if (I.has('precio')) return r.sv != null ? bot(`${SV[r.sv][0]} cuesta ${fmt(SV[r.sv][1])} y dura ${SV[r.sv][2]}. ¿Te agendo?`, ['Sí, agéndame', 'Otros precios']) : bot('Estos son nuestros precios:\n' + svList(), ['Agendar cita', 'Horarios']);
+    if (I.has('duracion')) return bot(r.sv != null ? `${SV[r.sv][0]} dura ${SV[r.sv][2]}.` : 'Así duran nuestros servicios:\n' + SV.map(v => `• ${v[0]}: ${v[2]}`).join('\n'), ['Agendar cita']);
+    if (I.has('horario')) return bot('Abrimos de lunes a sábado, de 10:00 a 20:00. Los domingos descansamos.', ['Agendar cita', 'Precios']);
+    if (I.has('ubicacion')) return bot('Estamos en Calle Olivo 24, Col. Centro (dirección de ejemplo). Hay estacionamiento enfrente.', ['Agendar cita']);
+    if (I.has('pago')) return bot('Aceptamos efectivo, tarjeta de débito o crédito y transferencia.', ['Agendar cita']);
+    if (I.has('persona')) {log('<b>Pasó la conversación</b> a una persona del equipo.'); return bot('Claro, te comunico con alguien del equipo. Te escriben en menos de 15 minutos.', MENU)}
+    if (I.has('gracias') || I.has('adios')) return bot('¡Con gusto! Aquí estoy si necesitas algo más. 🌿', []);
+    if (I.has('saludo')) return bot('¡Hola! Soy el asistente de Estética Alma. Te ayudo con precios, citas, horarios o ubicación. ¿Qué necesitas?', MENU);
+    log('<b>No entendió</b> y ofreció pasar con una persona.');
+    bot('Perdón, no te entendí bien. Te ayudo con precios, citas, horarios o ubicación; si prefieres, te comunico con una persona.', [...MENU, 'Hablar con una persona']);
+  }
+  function send(t) {t = t.trim(); if (!t) return; msg(t, 1); reply(t)}
+  $('f').addEventListener('submit', e => {e.preventDefault(); send($('t').value); $('t').value = ''});
+  $('chips').addEventListener('click', e => {const b = e.target.closest('button'); if (b) send(b.textContent === 'Sí, agéndame' ? 'agendar cita' : b.textContent === 'Otros precios' ? 'precios' : b.textContent)});
+  $('try').addEventListener('click', e => {const b = e.target.closest('button'); if (b) {send(b.textContent); $('t').focus({preventScroll: true})}});
+  agenda();
+  bot('¡Hola! Soy el asistente de Estética Alma. Te ayudo con precios, citas, horarios o ubicación. ¿Qué necesitas?', MENU);
+  nM = -1; // el saludo inicial no cuenta como respuesta
+})();
+
+/* Autoprueba de la comprensión: abre la página con #test y revisa la consola */
+if (location.hash === '#test') {
+  const T = (txt, chk) => {const r = NLU.parse(txt, new Date(2026, 10, 18)); console.assert(chk(r), txt, r); return chk(r)};
+  const ok = [
+    T('kiero un masajito pa mñn en la tarde', r => r.intents.includes('agendar') && r.sv === 2 && r.day.getDate() === 19 && r.part === 'tarde'),
+    T('cuanto sale la depilasion', r => r.intents.includes('precio') && r.sv === 1),
+    T('ke onda, a q ora abren el sabado?', r => r.intents.includes('saludo') && r.intents.includes('horario')),
+    T('me agendas facial el viernes a las 12? soy Caro', r => r.sv === 0 && r.day.getDay() === 5 && r.hour === 12 && r.name === 'Caro'),
+    T('holaaa', r => r.intents.includes('saludo')),
+    T('ubicasion?', r => r.intents.includes('ubicacion')),
+    T('kiero ir a las 4', r => r.hour === 16),
+    T('presio de las uñas', r => r.intents.includes('precio') && r.sv === 3),
+    T('aseptan tarjeta', r => r.intents.includes('pago')),
+    T('mejor cancelame la sita', r => r.intents.includes('cancelar') || r.intents.includes('agendar'))];
+  console.log('Autoprueba NLU:', ok.filter(Boolean).length + '/' + ok.length);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aetheris — Espacio de trabajo neuronal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+
+<!-- ═════════ BLOQUE 1 · CONFIGURACIÓN TAILWIND ═════════ -->
+<script>
+tailwind.config = { theme: { extend: {
+  colors: { void:'#050505', ink:'#0b0b10', neon:'#7c3aed', glow:'#a78bfa', ice:'#38bdf8' },
+  fontFamily: { display:['"Space Grotesk"','Inter','system-ui','sans-serif'], sans:['Inter','system-ui','sans-serif'] }
+}}};
+</script>
+
+<!-- ═════════ BLOQUE 2 · CSS PERSONALIZADO ═════════ -->
+<style>
+:root{--bg:#050505;--fg:#ececf3;--mute:#8b8b9a;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{background:var(--bg);scroll-padding-top:env(safe-area-inset-top,0px)}
+body{background:var(--bg);color:var(--fg);font-family:Inter,system-ui,sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+.glass{background:rgba(12,12,18,.55);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.08)}
+#nav{transition:background .4s,border-color .4s;border:1px solid transparent;border-radius:999px}
+.grad-text{background:linear-gradient(90deg,#c4b5fd,#7c3aed 50%,#38bdf8);-webkit-background-clip:text;background-clip:text;color:transparent}
+.line{display:block;overflow:hidden;padding-bottom:.08em}
+.w{display:inline-block}
+.btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:.6rem;padding:1rem 2rem;border-radius:999px;background:#7c3aed;color:#fff;font-weight:500;box-shadow:0 0 40px rgba(124,58,237,.45);cursor:pointer;border:0}
+.btn::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.55) 50%,transparent 70%);transform:translateX(-130%);transition:transform .8s}
+.btn:hover::after{transform:translateX(130%)}
+.card{position:relative;overflow:hidden;border-radius:28px;padding:1.75rem;background:var(--ink,#0b0b10);border:1px solid rgba(255,255,255,.07);transform-style:preserve-3d;will-change:transform}
+.card::before{content:"";position:absolute;inset:0;background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(124,58,237,.28),transparent 60%);opacity:0;transition:opacity .35s;pointer-events:none}
+.card:hover::before{opacity:1}
+.card:hover{border-color:rgba(167,139,250,.4)}
+.tag{font:500 .7rem/1 'Space Grotesk',sans-serif;letter-spacing:.15em;text-transform:uppercase;color:#a78bfa}
+.orb{background:radial-gradient(circle at 30% 30%,#c4b5fd,#7c3aed 45%,#1e1b4b 80%);box-shadow:0 0 120px rgba(124,58,237,.6);border-radius:50%}
+.blob{position:absolute;border-radius:50%;filter:blur(110px);pointer-events:none}
+.scroll-line{width:1px;height:64px;background:linear-gradient(#a78bfa,transparent);position:relative;overflow:hidden}
+.scroll-line::after{content:"";position:absolute;left:0;top:-20px;width:1px;height:20px;background:#fff;animation:drop 1.8s infinite}
+@keyframes drop{to{top:64px}}
+.step{opacity:.3;transition:opacity .5s}
+.step.on{opacity:1}
+.step.on .num{color:#a78bfa}
+.pb{height:6px;border-radius:9px;background:linear-gradient(90deg,#7c3aed,#38bdf8);transform-origin:left;transform:scaleX(0)}
+.dots span{display:inline-block;width:6px;height:6px;border-radius:50%;background:#a78bfa;margin-right:4px;animation:bl 1.2s infinite}
+.dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
+@keyframes bl{50%{opacity:.2}}
+input::placeholder{color:#6b6b7a}
+#note.folded{max-height:0;opacity:0;margin-bottom:0;padding-top:0;padding-bottom:0;border-width:0}
+#note{max-height:5rem}
+@media (prefers-reduced-motion:reduce){.scroll-line::after,.dots span{animation:none}}
+</style>
+</head>
+<body>
+<!-- Acceso de regreso a NEXO (igual que en la demo de comandas) -->
+<a href="../index.html#contacto" class="fixed bottom-4 right-4 z-50 rounded-full border border-white/15 bg-black/70 px-4 py-2.5 text-xs text-white backdrop-blur hover:bg-black/90" style="margin-bottom:env(safe-area-inset-bottom,0px)">Demo de NEXO TECH STUDIOS · <b>¿Quieres una así?</b></a>
+
+<!-- ═════════ BLOQUE 3 · HTML ═════════ -->
+<header class="fixed inset-x-0 top-0 z-50 px-4" style="padding-top:calc(env(safe-area-inset-top,0px) + 12px)">
+  <p role="note" id="note" class="mx-auto mb-2 max-w-5xl overflow-hidden transition-all duration-500 rounded-full border border-amber-300/30 bg-amber-300/10 px-4 py-1.5 text-center text-[11px] leading-snug text-amber-100 backdrop-blur sm:text-xs">
+    <b>Página de demostración.</b> Aetheris es una marca de concepto creada por NEXO TECH STUDIOS: no es un producto real y el registro está desactivado.
+  </p>
+  <nav id="nav" class="mx-auto flex max-w-5xl items-center justify-between px-6 py-3">
+    <a href="#top" class="font-display text-lg font-bold tracking-tight">Aetheris<span class="text-glow">.</span></a>
+    <div class="hidden gap-8 text-sm text-[#a1a1b0] md:flex">
+      <a href="#funciones" class="hover:text-white">Funciones</a><a href="#demo" class="hover:text-white">Demo</a><a href="#cifras" class="hover:text-white">Cifras</a>
+    </div>
+    <a href="#acceso" class="rounded-full bg-white px-4 py-2 text-sm font-medium text-black">Acceso</a>
+  </nav>
+</header>
+
+<main>
+<!-- HERO -->
+<section id="top" class="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 text-center">
+  <canvas id="fx" class="absolute inset-0 h-full w-full"></canvas>
+  <div class="blob bg-neon/40" style="width:520px;height:520px;top:8%;left:50%;margin-left:-260px"></div>
+  <div class="relative z-10">
+    <p class="hero-in tag mb-8">Espacio de trabajo neuronal</p>
+    <h1 class="font-display text-[clamp(3.2rem,12vw,10rem)] font-bold leading-[.9] tracking-tighter">
+      <span class="line"><span class="w">Piensa</span> <span class="w">más</span></span>
+      <span class="line"><span class="w grad-text">allá</span> <span class="w">del</span> <span class="w">límite.</span></span>
+    </h1>
+    <p class="hero-in grad-text mx-auto mt-8 max-w-xl text-lg font-light md:text-2xl">Una IA que entiende tu contexto, recuerda tu trabajo y actúa antes de que lo pidas.</p>
+    <div class="hero-in mt-12"><a href="#acceso" class="btn mag">Solicitar acceso <span>→</span></a></div>
+  </div>
+  <div class="hero-in absolute bottom-8 flex flex-col items-center gap-3 text-xs text-[#6b6b7a]"><span>Desliza</span><div class="scroll-line"></div></div>
+</section>
+
+<!-- BENTO -->
+<section id="funciones" class="mx-auto max-w-6xl px-6 py-32">
+  <p id="manifesto" class="font-display mx-auto mb-24 max-w-3xl text-center text-3xl font-medium leading-tight md:text-5xl">Aetheris no responde preguntas. Entiende lo que estás construyendo y avanza contigo.</p>
+  <div class="grid auto-rows-[220px] gap-4 md:grid-cols-4">
+    <article class="card tilt md:col-span-2 md:row-span-2" data-r>
+      <span class="tag">Contexto infinito</span>
+      <h3 class="font-display mt-3 max-w-xs text-3xl font-medium">Todo tu trabajo, en una sola mente.</h3>
+      <div class="orb absolute -bottom-16 -right-16 h-72 w-72 opacity-90"></div>
+    </article>
+    <article class="card tilt md:col-span-2" data-r>
+      <span class="tag">Memoria viva</span>
+      <h3 class="font-display mt-3 text-2xl font-medium">Aprende de cada decisión.</h3>
+      <p class="mt-2 max-w-sm text-sm text-[#8b8b9a]">Un grafo que crece contigo y conecta proyectos, personas e ideas.</p>
+    </article>
+    <article class="card tilt" data-r>
+      <span class="tag">Agentes</span>
+      <h3 class="font-display mt-3 text-xl font-medium">Tareas que se resuelven solas.</h3>
+    </article>
+    <article class="card tilt" data-r>
+      <span class="tag">Privacidad</span>
+      <h3 class="font-display mt-3 text-xl font-medium">Cifrado de extremo a extremo.</h3>
+    </article>
+    <article class="card tilt md:col-span-4 !h-auto md:!h-full" data-r>
+      <span class="tag">Integraciones</span>
+      <h3 class="font-display mt-3 text-2xl font-medium">Se conecta con las herramientas que ya usas.</h3>
+      <div class="mt-4 flex flex-wrap gap-2 text-sm text-[#a1a1b0]"><span class="glass rounded-full px-4 py-1.5">Calendario</span><span class="glass rounded-full px-4 py-1.5">Correo</span><span class="glass rounded-full px-4 py-1.5">Documentos</span><span class="glass rounded-full px-4 py-1.5">Código</span><span class="glass rounded-full px-4 py-1.5">CRM</span></div>
+    </article>
+  </div>
+</section>
+
+<!-- SCROLLYTELLING -->
+<section id="demo" class="relative flex min-h-screen items-center overflow-hidden px-6 pt-20 md:pt-0">
+  <div class="blob bg-ice/20" style="width:420px;height:420px;right:-100px;top:20%"></div>
+  <div class="mx-auto grid w-full max-w-6xl items-center gap-6 md:gap-12 md:grid-cols-2">
+    <div>
+      <p class="tag mb-4 md:mb-6">Demostración</p>
+      <ol class="space-y-3 md:space-y-8">
+        <li class="step on"><span class="num font-display text-sm">01</span><h3 class="font-display text-2xl md:text-3xl font-medium">Pregunta</h3><p class="text-[#8b8b9a] [@media(max-height:720px)]:hidden">Háblale como a un colega.</p></li>
+        <li class="step"><span class="num font-display text-sm">02</span><h3 class="font-display text-2xl md:text-3xl font-medium">Razona</h3><p class="text-[#8b8b9a] [@media(max-height:720px)]:hidden">Cruza miles de fuentes en milisegundos.</p></li>
+        <li class="step"><span class="num font-display text-sm">03</span><h3 class="font-display text-2xl md:text-3xl font-medium">Entrega</h3><p class="text-[#8b8b9a] [@media(max-height:720px)]:hidden">Conclusiones claras y accionables.</p></li>
+      </ol>
+      <div class="mt-6 md:mt-10 h-px w-full max-w-xs bg-white/10"><div id="bar" class="h-px origin-left bg-glow" style="transform:scaleX(0)"></div></div>
+    </div>
+    <div class="glass relative mx-auto aspect-square sm:aspect-[4/3] min-h-[370px] [@media(max-height:720px)]:aspect-auto [@media(max-height:720px)]:min-h-[310px] w-full max-w-lg overflow-hidden rounded-3xl p-6">
+      <div class="mb-6 flex gap-2"><i class="h-3 w-3 rounded-full bg-white/15"></i><i class="h-3 w-3 rounded-full bg-white/15"></i><i class="h-3 w-3 rounded-full bg-white/15"></i></div>
+      <div id="orb" class="orb absolute -right-10 -top-10 h-32 w-32 opacity-70"></div>
+      <div class="panel absolute inset-x-6 top-14 sm:top-20">
+        <div class="ml-auto max-w-[85%] rounded-2xl rounded-br-sm bg-neon/80 p-4 text-sm">Resume las 40 reuniones del trimestre y detecta riesgos.</div>
+        <div class="dots mt-6"><span></span><span></span><span></span></div>
+      </div>
+      <div class="panel absolute inset-x-6 top-14 sm:top-20 space-y-4 text-sm">
+        <p class="text-[#a1a1b0]">Analizando 1 240 documentos…</p>
+        <div><div class="mb-1 flex justify-between text-xs text-[#8b8b9a]"><span>Actas</span><span>92%</span></div><div class="pb" data-w=".92"></div></div>
+        <div><div class="mb-1 flex justify-between text-xs text-[#8b8b9a]"><span>Correos</span><span>71%</span></div><div class="pb" data-w=".71"></div></div>
+        <div><div class="mb-1 flex justify-between text-xs text-[#8b8b9a]"><span>Tableros</span><span>48%</span></div><div class="pb" data-w=".48"></div></div>
+      </div>
+      <div class="panel absolute inset-x-6 top-14 sm:top-20 space-y-2 sm:space-y-3 text-[13px] sm:text-sm">
+        <p class="tag">3 riesgos detectados</p>
+        <div class="rounded-xl border border-white/10 bg-white/5 p-2.5 sm:p-3">Presupuesto de diseño excede 18% el plan.</div>
+        <div class="rounded-xl border border-white/10 bg-white/5 p-2.5 sm:p-3">Dependencia crítica sin responsable asignado.</div>
+        <div class="rounded-xl border border-white/10 bg-white/5 p-2.5 sm:p-3">Lanzamiento en conflicto con auditoría.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MÉTRICAS -->
+<section id="cifras" class="relative mx-auto max-w-6xl px-6 py-32">
+  <div class="grid grid-cols-2 gap-10 text-center md:grid-cols-4">
+    <div data-r><div class="font-display grad-text text-5xl font-bold md:text-6xl"><span data-count="2400" data-s="+">0</span></div><p class="mt-2 text-sm text-[#8b8b9a]">Equipos activos</p></div>
+    <div data-r><div class="font-display grad-text text-5xl font-bold md:text-6xl"><span data-count="98" data-s="%">0</span></div><p class="mt-2 text-sm text-[#8b8b9a]">Precisión</p></div>
+    <div data-r><div class="font-display grad-text text-5xl font-bold md:text-6xl"><span data-count="12" data-s=" ms">0</span></div><p class="mt-2 text-sm text-[#8b8b9a]">Latencia media</p></div>
+    <div data-r><div class="font-display grad-text text-5xl font-bold md:text-6xl"><span data-count="87">0</span></div><p class="mt-2 text-sm text-[#8b8b9a]">Países</p></div>
+  </div>
+  <div class="mt-24 grid gap-6 md:grid-cols-3">
+    <blockquote class="glass float rounded-3xl p-6 text-sm leading-relaxed text-[#c9c9d6]">“Redujimos a la mitad el tiempo de planeación. Es como tener un director de operaciones incansable.”<footer class="mt-4 text-xs text-glow">Laura Méndez · COO, Lumina</footer></blockquote>
+    <blockquote class="glass float rounded-3xl p-6 text-sm leading-relaxed text-[#c9c9d6] md:mt-12">“La primera IA que recuerda lo que decidimos hace tres meses y por qué.”<footer class="mt-4 text-xs text-glow">Andrés Ruiz · CTO, Vértice</footer></blockquote>
+    <blockquote class="glass float rounded-3xl p-6 text-sm leading-relaxed text-[#c9c9d6]">“Se siente como ciencia ficción, pero funciona desde el primer día.”<footer class="mt-4 text-xs text-glow">Sofía Navarro · Directora de producto, Orbe</footer></blockquote>
+  </div>
+</section>
+</main>
+
+<!-- CTA FINAL -->
+<footer id="acceso" class="relative overflow-hidden px-6 pb-12 pt-32 text-center">
+  <div class="blob bg-neon/30" style="width:600px;height:600px;bottom:-300px;left:50%;margin-left:-300px"></div>
+  <div class="relative z-10 mx-auto max-w-2xl" data-r>
+    <h2 class="font-display text-5xl font-bold tracking-tighter md:text-7xl">El futuro del trabajo <span class="grad-text">ya empezó.</span></h2>
+    <form id="form" class="glass mx-auto mt-12 flex max-w-md items-center gap-2 rounded-full p-2">
+      <input type="email" required placeholder="tu@empresa.com" aria-label="Correo electrónico" class="min-w-0 flex-1 bg-transparent px-4 text-sm text-white outline-none">
+      <button type="submit" class="btn mag !px-6 !py-3 text-sm">Unirme</button>
+    </form>
+    <p id="msg" class="mt-4 min-h-5 text-sm text-glow" role="status" aria-live="polite"></p>
+    <p class="mx-auto mt-2 max-w-md text-xs text-[#8b8b9a]">Demo: este formulario no envía ni guarda ningún dato.</p>
+  </div>
+  <p class="relative z-10 mt-24 text-xs text-[#6b6b7a]">© 2026 Aetheris · Demo creada por NEXO TECH STUDIOS</p>
+</footer>
+
+<!-- ═════════ BLOQUE 4 · JAVASCRIPT + GSAP ═════════ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+const $=s=>gsap.utils.toArray(s);
+
+/* Navegación glass al hacer scroll */
+const nav=document.getElementById('nav');
+const note=document.getElementById('note'); // el aviso se pliega al bajar para no tapar el contenido; vuelve arriba
+addEventListener('scroll',()=>{nav.classList.toggle('glass',scrollY>60);note.classList.toggle('folded',scrollY>60)},{passive:true});
+
+/* Entrada escalonada del hero */
+gsap.timeline({defaults:{ease:'expo.out'}})
+  .from('#nav',{y:-40,autoAlpha:0,duration:1})
+  .from('.w',{yPercent:115,stagger:.09,duration:1.2},'-=.6')
+  .from('.hero-in',{y:26,autoAlpha:0,stagger:.12,duration:1},'-=.7');
+
+/* Partículas del hero */
+const cv=document.getElementById('fx'),cx=cv.getContext('2d');let W,H,P=[];
+function rs(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight;P=Array.from({length:Math.min(70,W/18|0)},()=>({x:Math.random()*W,y:Math.random()*H,v:.15+Math.random()*.4,r:Math.random()*1.4+.3}))}
+function draw(){cx.clearRect(0,0,W,H);P.forEach(p=>{p.y-=p.v;if(p.y<0)p.y=H;cx.fillStyle='rgba(167,139,250,'+(.2+p.r/3)+')';cx.beginPath();cx.arc(p.x,p.y,p.r,0,7);cx.fill()});requestAnimationFrame(draw)}
+rs();addEventListener('resize',rs);draw();
+
+/* Revelado de texto con scrub (palabra por palabra) */
+const mf=document.getElementById('manifesto');
+mf.innerHTML=mf.textContent.split(' ').map(w=>'<span class="inline-block">'+w+'</span>').join(' ');
+gsap.fromTo(mf.children,{opacity:.12},{opacity:1,stagger:.1,ease:'none',scrollTrigger:{trigger:mf,start:'top 80%',end:'bottom 45%',scrub:true}});
+
+/* Revelado genérico de bloques */
+$('[data-r]').forEach(el=>gsap.from(el,{y:50,autoAlpha:0,duration:1,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 88%'}}));
+
+/* Tilt 3D + foco de luz en tarjetas */
+$('.tilt').forEach(c=>{
+  c.addEventListener('pointermove',e=>{
+    const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+    c.style.setProperty('--mx',x*100+'%');c.style.setProperty('--my',y*100+'%');
+    gsap.to(c,{rotationY:(x-.5)*12,rotationX:-(y-.5)*12,transformPerspective:900,duration:.4,ease:'power2.out'});
+  });
+  c.addEventListener('pointerleave',()=>gsap.to(c,{rotationX:0,rotationY:0,duration:.8,ease:'elastic.out(1,.5)'}));
+});
+
+/* Botones magnéticos */
+$('.mag').forEach(b=>{
+  b.addEventListener('pointermove',e=>{const r=b.getBoundingClientRect();gsap.to(b,{x:(e.clientX-r.left-r.width/2)*.3,y:(e.clientY-r.top-r.height/2)*.3,duration:.4})});
+  b.addEventListener('pointerleave',()=>gsap.to(b,{x:0,y:0,duration:.8,ease:'elastic.out(1,.4)'}));
+});
+
+/* Scrollytelling: sección fijada que cambia de estado */
+const panels=$('.panel'),steps=$('.step');let cur=-1;
+gsap.set(panels,{autoAlpha:0});
+function show(i){
+  if(i===cur)return;
+  if(cur>-1)gsap.to(panels[cur],{autoAlpha:0,y:-30,duration:.4});
+  gsap.fromTo(panels[i],{autoAlpha:0,y:30},{autoAlpha:1,y:0,duration:.6,delay:.15});
+  if(i===1)$('.pb').forEach((p,k)=>gsap.fromTo(p,{scaleX:0},{scaleX:+p.dataset.w,duration:1.2,delay:.3+k*.2,ease:'power3.out'}));
+  steps.forEach((s,k)=>s.classList.toggle('on',k===i));cur=i;
+}
+show(0);
+ScrollTrigger.create({trigger:'#demo',start:'top top',end:'+=240%',pin:true,scrub:true,refreshPriority:1,anticipatePin:1,invalidateOnRefresh:true,
+  onUpdate:s=>{show(Math.min(2,Math.floor(s.progress*3)));gsap.set('#bar',{scaleX:s.progress})}});
+gsap.to('#orb',{rotation:360,scale:1.6,ease:'none',scrollTrigger:{trigger:'#demo',start:'top top',end:'+=240%',scrub:true,refreshPriority:1}});
+/* La sección fijada se calcula primero; el resto respeta el espacio que agrega.
+   Se recalcula cuando Tailwind, las fuentes y las imágenes terminan de acomodar la página. */
+ScrollTrigger.sort();
+document.fonts && document.fonts.ready.then(()=>ScrollTrigger.refresh());
+addEventListener('load',()=>ScrollTrigger.refresh());
+
+/* Contadores animados */
+$('[data-count]').forEach(el=>{const o={v:0};
+  ScrollTrigger.create({trigger:el,start:'top 90%',once:true,onEnter:()=>gsap.to(o,{v:+el.dataset.count,duration:2.2,ease:'power2.out',
+    onUpdate:()=>el.textContent=Math.round(o.v).toLocaleString('es-MX')+(el.dataset.s||'')})});
+});
+
+/* Testimonios flotantes */
+$('.float').forEach((t,i)=>gsap.to(t,{y:-14,duration:2.6+i*.5,repeat:-1,yoyo:true,ease:'sine.inOut'}));
+
+/* Formulario */
+document.getElementById('form').addEventListener('submit',e=>{
+  e.preventDefault();
+  const m=document.getElementById('msg');m.innerHTML='Esta es una página de demostración: no guardamos tu correo. ¿Quieres una página así? <a href="../index.html#contacto" class="underline">Escríbenos</a>.';
+  gsap.from(m,{y:10,autoAlpha:0});e.target.reset();
+});
+</script>
+</body>
+</html>

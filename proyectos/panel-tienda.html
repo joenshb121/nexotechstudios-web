@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Boutique Lila · Panel de ventas — Demo de NEXO TECH STUDIOS</title>
+<meta name="description" content="Demo interactiva de un panel de ventas e inventario para tienda, creada por NEXO TECH STUDIOS.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#f7f5f2;--card:#fff;--ink:#1d1a2b;--mu:#6c6780;--li:#7c5cff;--li2:#d9d2f3;--ok:#16a06a;--warn:#c2410c;--line:#ebe7f0;color-scheme:light}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Manrope,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  button,select{font:inherit;color:inherit}
+  :focus-visible{outline:2px solid var(--li);outline-offset:2px}
+  .w{max-width:1180px;margin:0 auto;padding:clamp(16px,3vw,32px)}
+  header{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between;margin-bottom:20px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{width:40px;height:40px;border-radius:12px;background:var(--li);color:#fff;display:grid;place-items:center;font-weight:700}
+  h1{font-size:1.25rem;margin:0;line-height:1.2}
+  .sub{color:var(--mu);font-size:.85rem}
+  .ctl{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .seg{display:inline-flex;background:#ece8f3;border-radius:12px;padding:4px}
+  .seg button{border:0;background:none;padding:7px 14px;border-radius:9px;cursor:pointer;font-weight:500}
+  .seg button[aria-pressed=true]{background:#fff;box-shadow:0 1px 4px rgba(29,26,43,.12)}
+  select,.btn{border:1px solid var(--line);background:#fff;border-radius:12px;padding:8px 12px;cursor:pointer}
+  .btn:hover{border-color:var(--li)}
+  .grid{display:grid;gap:16px;grid-template-columns:repeat(12,1fr)}
+  .card{background:var(--card);border-radius:18px;padding:18px 20px;box-shadow:0 1px 3px rgba(29,26,43,.06);min-width:0}
+  .card h2{font-size:.95rem;margin:0 0 12px;font-weight:700}
+  .k{grid-column:span 3}
+  .k small{display:block;color:var(--mu);font-size:.82rem}
+  .k b{display:block;font-size:clamp(1.4rem,2.6vw,1.9rem);font-weight:700;font-variant-numeric:tabular-nums;margin:2px 0}
+  .d{font-size:.8rem;font-weight:500}
+  .d.up{color:var(--ok)} .d.dn{color:var(--warn)}
+  .chart{grid-column:span 8}
+  .top{grid-column:span 4}
+  .chan{grid-column:span 4}
+  .inv{grid-column:span 4}
+  .rec{grid-column:span 4}
+  svg{display:block;width:100%;height:auto}
+  .bar{fill:var(--li2);transition:fill .2s}
+  .bar:hover,.bar.hl{fill:var(--li)}
+  .ax{fill:var(--mu);font-size:11px}
+  .tip{height:1.4em;color:var(--mu);font-size:.85rem;margin-top:6px}
+  .tp{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+  .tp div{display:flex;justify-content:space-between;gap:8px;font-size:.9rem}
+  .tp i{display:block;height:6px;border-radius:6px;background:var(--li);margin-top:5px}
+  .stack{display:flex;height:14px;border-radius:8px;overflow:hidden;margin:6px 0 14px}
+  .lg{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:.9rem}
+  .lg li{display:flex;align-items:center;gap:8px}
+  .lg span{width:10px;height:10px;border-radius:3px;flex:none}
+  .lg em{margin-left:auto;font-style:normal;color:var(--mu)}
+  .al{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+  .al li{display:flex;align-items:center;gap:10px;justify-content:space-between;padding:10px 12px;border-radius:12px;background:#fff5ed;font-size:.9rem}
+  .al small{display:block;color:var(--warn)}
+  .al button{border:0;background:var(--ink);color:#fff;border-radius:9px;padding:6px 10px;cursor:pointer;white-space:nowrap;font-size:.8rem}
+  .al button:disabled{background:var(--ok);cursor:default}
+  table{width:100%;border-collapse:collapse;font-size:.88rem}
+  td{padding:8px 0;border-bottom:1px solid var(--line)}
+  td:last-child{text-align:right;font-variant-numeric:tabular-nums}
+  .ch{font-size:.72rem;padding:2px 7px;border-radius:6px;background:#efecf6;color:var(--mu)}
+  .empty{color:var(--mu);font-size:.9rem}
+  footer{margin-top:24px;display:flex;flex-wrap:wrap;gap:8px 16px;justify-content:space-between;color:var(--mu);font-size:.85rem}
+  footer a{color:var(--li);font-weight:700}
+  /* Animaciones */
+  .card{animation:up .6s cubic-bezier(.22,1,.36,1) both;animation-delay:calc(var(--i,0)*60ms)}
+  @keyframes up{from{opacity:0;transform:translateY(14px)}}
+  .anim .bar{transform-box:fill-box;transform-origin:center bottom;animation:grow .8s cubic-bezier(.22,1,.36,1) both;animation-delay:calc(var(--i)*35ms)}
+  @keyframes grow{from{transform:scaleY(0)}}
+  .anim .tp i,.anim .stack span{animation:wd .9s cubic-bezier(.22,1,.36,1) both;animation-delay:calc(var(--i,0)*80ms + 150ms)}
+  @keyframes wd{from{width:0}}
+  .anim .tp li,.anim .al li,.anim #rec tr{animation:up .45s ease-out both;animation-delay:calc(var(--i,0)*50ms)}
+  .k b.flash{color:var(--ok)}
+  .k b{transition:color .6s}
+  #rec tr.nw td{animation:hl 2.4s ease-out}
+  @keyframes hl{from{background:#e7f8ef}}
+  .toast{position:fixed;right:16px;bottom:16px;z-index:9;background:var(--ink);color:#fff;border-radius:14px;padding:12px 16px;font-size:.9rem;
+    box-shadow:0 18px 40px -16px rgba(29,26,43,.6);transform:translateY(140%);transition:transform .45s cubic-bezier(.22,1,.36,1)}
+  .toast.show{transform:none}
+  .toast b{color:#9fe0b4}
+  .liv{display:inline-flex;align-items:center;gap:6px}
+  .liv i{width:8px;height:8px;border-radius:50%;background:var(--ok);animation:pl 2s infinite}
+  @keyframes pl{0%{box-shadow:0 0 0 0 rgba(22,160,106,.5)}100%{box-shadow:0 0 0 8px transparent}}
+  @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+  @media(max-width:980px){.k{grid-column:span 6}.chart{grid-column:span 12}.top,.chan,.inv,.rec{grid-column:span 6}}
+  @media(max-width:620px){.k,.top,.chan,.inv,.rec{grid-column:span 12}.seg button{padding:7px 10px}}
+</style>
+</head>
+<body>
+<div class="w">
+  <header>
+    <div class="brand"><div class="logo" aria-hidden="true">L</div><div><h1>Boutique Lila · Panel de ventas</h1><div class="sub"><span class="liv"><i></i>En vivo</span> · <span id="upd"></span></div></div></div>
+    <div class="ctl">
+      <div class="seg" role="group" aria-label="Periodo" id="per">
+        <button type="button" data-p="1" aria-pressed="false">Hoy</button>
+        <button type="button" data-p="7" aria-pressed="true">7 días</button>
+        <button type="button" data-p="30" aria-pressed="false">30 días</button>
+      </div>
+      <label class="sr"><select id="cat" aria-label="Categoría"><option value="">Todas las categorías</option></select></label>
+      <button class="btn" type="button" id="csv">Descargar reporte</button>
+    </div>
+  </header>
+
+  <div class="grid">
+    <div style="--i:0" class="card k"><small>Ventas</small><b id="kV"></b><span class="d" id="dV"></span></div>
+    <div style="--i:1" class="card k"><small>Pedidos</small><b id="kP"></b><span class="d" id="dP"></span></div>
+    <div style="--i:2" class="card k"><small>Ticket promedio</small><b id="kT"></b><span class="d" id="dT"></span></div>
+    <div style="--i:3" class="card k"><small>Ganancia</small><b id="kG"></b><span class="d" id="dG"></span></div>
+
+    <div style="--i:4" class="card chart"><h2 id="chT">Ventas por día</h2><div id="chart"></div><div class="tip" id="tip">Pasa el cursor o toca una barra para ver el detalle.</div></div>
+    <div style="--i:5" class="card top"><h2>Lo más vendido</h2><ul class="tp" id="top"></ul></div>
+
+    <div style="--i:6" class="card chan"><h2>¿Por dónde compran?</h2><div class="stack" id="stk"></div><ul class="lg" id="lg"></ul></div>
+    <div style="--i:7" class="card inv"><h2>Por agotarse</h2><ul class="al" id="al"></ul></div>
+    <div style="--i:8" class="card rec"><h2>Ventas recientes</h2><table><tbody id="rec"></tbody></table></div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <footer>
+    <span>Datos de ejemplo generados para la demo. Boutique Lila es una marca de concepto.</span>
+    <span>Demo de NEXO TECH STUDIOS · <a href="../index.html#contacto">¿Quieres un panel así para tu negocio?</a></span>
+  </footer>
+</div>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const P = [ // nombre, categoría, precio, costo, existencias, mínimo
+    ['Playera básica', 'Playeras', 340, 140, 3, 8], ['Playera estampada', 'Playeras', 420, 170, 14, 8],
+    ['Vestido de lino', 'Vestidos', 1150, 480, 2, 4], ['Vestido midi', 'Vestidos', 980, 400, 9, 4],
+    ['Jeans recto', 'Pantalones', 890, 360, 11, 6], ['Pantalón de lino', 'Pantalones', 760, 300, 5, 6],
+    ['Bolsa tejida', 'Accesorios', 560, 210, 7, 5], ['Aretes dorados', 'Accesorios', 220, 70, 25, 10]];
+  const CH = [['Tienda', '#7c5cff'], ['WhatsApp', '#25b866'], ['Web', '#f59e0b']];
+  // Ventas de ejemplo de 60 días, con semilla fija para que siempre se vean igual
+  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const S = [];
+  for (let d = 0; d < 60; d++) {
+    const n = 9 + Math.round(rnd() * 8 + (d % 7 === 1 || d % 7 === 2 ? 6 : 0) - d / 15);
+    for (let i = 0; i < n; i++) {
+      const p = Math.floor(Math.pow(rnd(), 1.4) * P.length), q = rnd() < .8 ? 1 : 2;
+      const c = rnd() < .45 ? 0 : rnd() < .7 ? 1 : 2;
+      S.push({d, h: 10 + Math.floor(rnd() * 11), p, q, c, id: 0});
+    }
+  }
+  S.sort((a, b) => a.d - b.d || b.h - a.h).forEach((s, i, a) => s.id = 2400 - i);
+  const fmt = x => '$' + Math.round(x).toLocaleString('es-MX');
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const dayName = d => {const t = new Date(today); t.setDate(t.getDate() - d); return t.toLocaleDateString('es-MX', {weekday: 'short', day: 'numeric'})};
+  const cats = [...new Set(P.map(p => p[1]))]; $('cat').innerHTML += cats.map(c => `<option>${c}</option>`).join('');
+  const stamp = () => $('upd').textContent = 'actualizado a las ' + new Date().toLocaleTimeString('es-MX', {hour: '2-digit', minute: '2-digit', second: '2-digit'}); stamp();
+  let per = 7, cat = '';
+  const pick = (from, to) => S.filter(s => s.d >= from && s.d < to && (!cat || P[s.p][1] === cat));
+  const sum = L => L.reduce((a, s) => {const p = P[s.p]; a.v += p[2] * s.q; a.g += (p[2] - p[3]) * s.q; return a}, {v: 0, g: 0, n: L.length});
+  function delta(el, a, b) {
+    if (!b) {el.textContent = ''; return}
+    const x = (a - b) / b * 100; el.className = 'd ' + (x >= 0 ? 'up' : 'dn');
+    el.textContent = (x >= 0 ? '▲ ' : '▼ ') + Math.abs(x).toFixed(0) + '% vs. periodo anterior';
+  }
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function count(el, to, money, flash) {
+    const from = el._v || 0; el._v = to; const t0 = performance.now(), D = reduce ? 0 : 900;
+    if (flash && to > from) {el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 1200)}
+    const step = t => {const k = D ? Math.min(1, (t - t0) / D) : 1, e = 1 - Math.pow(1 - k, 3), x = from + (to - from) * e;
+      el.textContent = money ? fmt(x) : Math.round(x); if (k < 1) requestAnimationFrame(step)};
+    requestAnimationFrame(step);
+  }
+  function render(anim = true, flash = false) {
+    document.querySelector('.grid').classList.toggle('anim', anim);
+    const cur = pick(0, per), prev = pick(per, per * 2), a = sum(cur), b = sum(prev);
+    count($('kV'), a.v, 1, flash); delta($('dV'), a.v, b.v);
+    count($('kP'), a.n, 0, flash); delta($('dP'), a.n, b.n);
+    count($('kT'), a.n ? a.v / a.n : 0, 1); delta($('dT'), a.n ? a.v / a.n : 0, b.n ? b.v / b.n : 0);
+    count($('kG'), a.g, 1, flash); delta($('dG'), a.g, b.g);
+    // Gráfica
+    const byHour = per === 1, keys = byHour ? [...Array(11)].map((_, i) => 10 + i) : [...Array(per)].map((_, i) => per - 1 - i);
+    const vals = keys.map(k => sum(cur.filter(s => (byHour ? s.h : s.d) === k)).v);
+    const lab = k => byHour ? k + ':00' : dayName(k);
+    $('chT').textContent = byHour ? 'Ventas por hora (hoy)' : 'Ventas por día';
+    const W = 640, H = 220, pad = 22, max = Math.max(...vals, 1), bw = (W - pad) / keys.length;
+    const every = Math.ceil(keys.length / 8);
+    $('chart').innerHTML = `<svg viewBox="0 0 ${W} ${H + 24}" role="img" aria-label="${$('chT').textContent}">` +
+      vals.map((v, i) => {const h = v / max * (H - 10); return `<rect class="bar" style="--i:${i}" tabindex="0" data-i="${i}" x="${pad + i * bw + bw * .15}" y="${H - h}" width="${bw * .7}" height="${Math.max(h, 1)}" rx="4"><title>${lab(keys[i])}: ${fmt(v)}</title></rect>`}).join('') +
+      keys.map((k, i) => i % every ? '' : `<text class="ax" x="${pad + i * bw + bw / 2}" y="${H + 16}" text-anchor="middle">${lab(k)}</text>`).join('') +
+      `<text class="ax" x="0" y="12">${fmt(max)}</text></svg>`;
+    $('chart').querySelectorAll('.bar').forEach(r => {
+      const show = () => {$('chart').querySelectorAll('.hl').forEach(x => x.classList.remove('hl')); r.classList.add('hl'); const i = +r.dataset.i; $('tip').textContent = `${lab(keys[i])}: ${fmt(vals[i])} en ${cur.filter(s => (byHour ? s.h : s.d) === keys[i]).length} pedidos`};
+      r.addEventListener('mouseenter', show); r.addEventListener('focus', show); r.addEventListener('click', show);
+    });
+    // Lo más vendido
+    const tp = P.map((p, i) => ({p, v: sum(cur.filter(s => s.p === i)).v, u: cur.filter(s => s.p === i).reduce((a, s) => a + s.q, 0)})).filter(x => x.v).sort((x, y) => y.v - x.v).slice(0, 5);
+    $('top').innerHTML = tp.length ? tp.map((x, i) => `<li style="--i:${i}"><div><span>${x.p[0]} <small class="sub">· ${x.u} ${x.u > 1 ? 'pzas' : 'pza'}</small></span><b>${fmt(x.v)}</b></div><i style="width:${x.v / tp[0].v * 100}%;--i:${i}"></i></li>`).join('') : '<li class="empty">Sin ventas en este periodo.</li>';
+    // Canales
+    const cv = CH.map((c, i) => sum(cur.filter(s => s.c === i)).v), tot = cv.reduce((a, b) => a + b, 0) || 1;
+    $('stk').innerHTML = CH.map((c, i) => `<span style="width:${cv[i] / tot * 100}%;background:${c[1]};--i:${i}"></span>`).join('');
+    $('lg').innerHTML = CH.map((c, i) => `<li><span style="background:${c[1]}"></span>${c[0]}<em>${fmt(cv[i])} · ${Math.round(cv[i] / tot * 100)}%</em></li>`).join('');
+    // Inventario
+    const low = P.map((p, i) => [p, i]).filter(([p]) => p[4] <= p[5] && (!cat || p[1] === cat));
+    $('al').innerHTML = low.length ? low.map(([p, i], k) => `<li style="--i:${k}"><div>${p[0]}<small>Quedan ${p[4]} · mínimo ${p[5]}</small></div><button type="button" data-i="${i}" ${p.sent ? 'disabled' : ''}>${p.sent ? 'Pedido enviado ✓' : 'Pedir al proveedor'}</button></li>`).join('') : '<li class="empty" style="background:none;padding:0">Todo en orden: ningún producto bajo el mínimo.</li>';
+    // Recientes
+    $('rec').innerHTML = cur.slice(0, 7).map((s, k) => `<tr style="--i:${k}" class="${s.nw ? 'nw' : ''}"><td>#${s.id} ${P[s.p][0]}${s.q > 1 ? ' ×' + s.q : ''}<br><span class="ch">${CH[s.c][0]}</span> <span class="sub">${s.d ? dayName(s.d) : 'hoy'} ${s.h}:00</span></td><td>${fmt(P[s.p][2] * s.q)}</td></tr>`).join('') || '<tr><td class="empty">Sin ventas en este periodo.</td></tr>';
+  }
+  $('per').addEventListener('click', e => {const b = e.target.closest('button'); if (!b) return; per = +b.dataset.p; $('per').querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b)); render()});
+  $('cat').addEventListener('change', e => {cat = e.target.value; render()});
+  $('al').addEventListener('click', e => {const b = e.target.closest('button'); if (!b) return; P[+b.dataset.i].sent = true; b.disabled = true; b.textContent = 'Pedido enviado ✓'});
+  $('csv').addEventListener('click', () => {
+    const rows = [['Pedido', 'Fecha', 'Hora', 'Producto', 'Categoría', 'Piezas', 'Canal', 'Total']].concat(pick(0, per).map(s => [s.id, s.d ? dayName(s.d) : 'hoy', s.h + ':00', P[s.p][0], P[s.p][1], s.q, CH[s.c][0], P[s.p][2] * s.q]));
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + rows.map(r => r.join(',')).join('\n')], {type: 'text/csv'}));
+    a.download = 'reporte-boutique-lila.csv'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  });
+  render();
+  // Llega una venta nueva cada pocos segundos, como en un negocio real
+  let nid = 2401, tt;
+  setInterval(() => {
+    if (document.hidden) return;
+    const p = Math.floor(Math.pow(Math.random(), 1.4) * P.length), c = Math.random() < .45 ? 0 : Math.random() < .7 ? 1 : 2;
+    S.forEach(s => s.nw = false);
+    const s = {d: 0, h: Math.min(20, Math.max(10, new Date().getHours())), p, q: 1, c, id: nid++, nw: true}; S.unshift(s);
+    if (!cat || P[p][1] === cat) render(false, true);
+    stamp(); const t = $('toast'); t.innerHTML = `Venta nueva por <b>${CH[c][0]}</b>: ${P[p][0]}, ${fmt(P[p][2])}`;
+    t.classList.add('show'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('show'), 3200);
+  }, 7000);
+})();
+</script>
+</body>
+</html>
