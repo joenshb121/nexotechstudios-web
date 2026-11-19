@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64"><rect width="64" height="64" rx="14" fill="#0C0B0A"/><mask id="mfav" maskUnits="userSpaceOnUse" x="11.8" y="11.8" width="40.4" height="40.4">
+  <rect x="11.8" y="11.8" width="40.4" height="40.4" fill="#fff"/><circle cx="32.00" cy="32.00" r="9.22" fill="#000"/></mask>
+<g mask="url(#mfav)" stroke-width="7.30" stroke-linecap="round">
+  <path d="M16.45 16.45L47.55 47.55" stroke="#EDE7DA"/>
+  <path d="M47.55 16.45L16.45 47.55" stroke="#B07A46"/>
+</g>
+<circle cx="32.00" cy="32.00" r="4.99" fill="#EDE7DA"/></svg>
