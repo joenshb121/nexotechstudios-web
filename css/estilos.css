@@ -235,9 +235,28 @@
       font-size: .95rem
     }
 
-    nav .lg img {
+    nav .lg svg {
       height: 22px;
-      width: auto
+      width: auto;
+      overflow: visible
+    }
+
+    /* Logo: con mouse se ve solo la X; al pasar el cursor (o con teclado) la X avanza y aparece NEXO. En celular siempre completo. */
+    .lg-ne, .lg-o, .lg-x {
+      transition: transform .6s cubic-bezier(.2, .8, .2, 1), opacity .45s ease;
+      transform-box: fill-box;
+      transform-origin: center
+    }
+
+    @media (hover:hover) {
+      nav .lg:not(:hover):not(:focus-visible) .lg-x { transform: translateX(-267.8px) rotate(-90deg) }
+      nav .lg:not(:hover):not(:focus-visible) .lg-ne { transform: translateX(-40px); opacity: 0 }
+      nav .lg:not(:hover):not(:focus-visible) .lg-o { transform: translateX(-80px); opacity: 0 }
+      nav .lg:hover .lg-o, nav .lg:focus-visible .lg-o { transition-delay: .12s }
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+      .lg-ne, .lg-o, .lg-x { transition: opacity .2s }
     }
 
     nav .l {
