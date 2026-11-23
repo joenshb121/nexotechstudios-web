@@ -72,45 +72,4 @@
       }
     })();
 
-    /* Partículas de la portada: constelación que se conecta con el cursor */
-    (() => {
-      const cv = document.getElementById('hxp'); if (!cv || !cv.getContext) return;
-      const ctx = cv.getContext('2d'), hero = cv.parentElement, reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-      let Wd, Ht, dpr, P = [], m = {x: -1e4, y: -1e4}, run = true, raf = 0;
-      function size() {
-        dpr = Math.min(devicePixelRatio || 1, 2); Wd = hero.clientWidth; Ht = hero.clientHeight;
-        cv.width = Wd * dpr; cv.height = Ht * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        const n = Math.round(Math.min(110, Wd * Ht / 14000));
-        P = Array.from({length: n}, () => ({x: Math.random() * Wd, y: Math.random() * Ht, vx: (Math.random() - .5) * .25, vy: (Math.random() - .5) * .25, r: Math.random() * 1.4 + .5}));
-        if (reduce) draw();
-      }
-      function draw() {
-        ctx.clearRect(0, 0, Wd, Ht);
-        const L = 120;
-        for (let i = 0; i < P.length; i++) {
-          const a = P[i];
-          if (!reduce) {
-            a.x += a.vx; a.y += a.vy;
-            if (a.x < 0 || a.x > Wd) a.vx *= -1; if (a.y < 0 || a.y > Ht) a.vy *= -1;
-            const dx = m.x - a.x, dy = m.y - a.y, d = Math.hypot(dx, dy);
-            if (d < 180) {a.x += dx / d * .35; a.y += dy / d * .35}
-          }
-          for (let j = i + 1; j < P.length; j++) {
-            const b = P[j], d = Math.hypot(a.x - b.x, a.y - b.y);
-            if (d < L) {ctx.strokeStyle = `rgba(216,195,160,${(1 - d / L) * .22})`; ctx.lineWidth = .7; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke()}
-          }
-          const dm = Math.hypot(a.x - m.x, a.y - m.y);
-          if (dm < 170) {ctx.strokeStyle = `rgba(234,217,182,${(1 - dm / 170) * .45})`; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(m.x, m.y); ctx.stroke()}
-          ctx.fillStyle = dm < 170 ? 'rgba(246,232,200,.95)' : 'rgba(216,195,160,.55)';
-          ctx.beginPath(); ctx.arc(a.x, a.y, a.r, 0, 7); ctx.fill();
-        }
-      }
-      function loop() {if (run) {draw(); raf = requestAnimationFrame(loop)}}
-      size(); addEventListener('resize', () => {clearTimeout(size.t); size.t = setTimeout(size, 150)});
-      hero.addEventListener('pointermove', e => {const r = cv.getBoundingClientRect(); m.x = e.clientX - r.left; m.y = e.clientY - r.top}, {passive: true});
-      hero.addEventListener('pointerleave', () => {m.x = m.y = -1e4});
-      if (reduce) return;
-      new IntersectionObserver(([e]) => {run = e.isIntersecting; cancelAnimationFrame(raf); if (run) loop()}).observe(hero);
-      document.addEventListener('visibilitychange', () => {run = !document.hidden; cancelAnimationFrame(raf); if (run) loop()});
-    })();
   

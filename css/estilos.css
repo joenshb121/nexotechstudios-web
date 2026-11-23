@@ -335,7 +335,6 @@
     .hero .w{display:flex;flex-direction:column;align-items:center}
     .hero h1{margin:0;max-width:17ch;font-size:clamp(2.6rem,7.6vw,5.8rem);line-height:1;letter-spacing:-.01em;text-wrap:balance;
       background:linear-gradient(180deg,#FBF4E6 35%,#C9AE84);-webkit-background-clip:text;background-clip:text;color:transparent}
-    .hero p.s{max-width:36rem;margin:1.3rem auto 1.9rem;font-size:clamp(1rem,2.3vw,1.2rem);color:#CFC8B8}
     .hero .row{justify-content:center}
     @media(min-width:560px){.hero .row .btn{flex:0 0 auto}}
     .hero .w>*{animation:slideUp .8s cubic-bezier(.22,1,.36,1) both}
@@ -383,7 +382,6 @@
     .hx-cap{margin:clamp(3.4rem,8vw,5rem) auto 0;max-width:34rem;color:var(--mu);font-size:.95rem;text-align:center;padding:0 1rem}
     @container (max-width:430px){.hx-or{display:none}.hx-scr{grid-template-columns:1fr}}
     /* Capa "se nota que programamos": partículas, código en vivo y pulso de datos */
-    #hxp{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
     .hero>.w,.hx-wrap,.hx-cap{position:relative;z-index:1}
     .hx-wrap{width:min(1040px,calc(100% - 2rem));margin:clamp(2.6rem,6vw,4.5rem) auto 0}
     .hx-wrap .hx{width:auto;margin:0;padding-left:clamp(4rem,9vw,7rem);transition:transform .6s cubic-bezier(.22,1,.36,1);transform:perspective(1400px) rotateX(calc(var(--ty,0)*3deg)) rotateY(calc(var(--tx,0)*-4deg))}
@@ -1283,3 +1281,23 @@
     #ck button.ok{background:var(--ch);color:var(--k);border-color:var(--ch);font-weight:500}
     @media(max-width:560px){#ck{bottom:calc(env(safe-area-inset-bottom,0px) + 4.6rem)}}
   
+
+    /* Portada: etiquetas de servicios y línea de confianza (retro nov 2026) */
+    .chips{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:.55rem;margin:1.6rem auto 1.9rem;max-width:48rem}
+    .chips li{border:1px solid rgba(216,195,160,.45);background:rgba(216,195,160,.08);color:var(--tx);border-radius:999px;padding:.45rem 1rem;font-size:clamp(.92rem,2vw,1.02rem)}
+    .trust{margin-top:1.1rem;font-size:.9rem;color:var(--mu)}
+
+    /* Servicios: viñetas y frase de acción */
+    .sv ul.bl{list-style:none;padding:0;display:grid;gap:.25rem;font-size:.97rem;flex:1;align-content:start}
+    .sv ul.bl li::before{content:"✓ ";color:var(--ch);font-weight:500}
+    .sv .out{font-weight:500;color:var(--ch);line-height:1.35}
+
+    /* Secciones alternas en blanco hueso: menos negro, más cálido */
+    .alt{--k:#FBF7EF;--g:#F2EADC;--tx:#1E1A15;--mu:#6A6153;--ch:#8A5A2B;--sp:rgba(176,122,70,.12);color-scheme:light;color:var(--tx);background:var(--g)}
+    .alt .cd,.alt .pk{border-color:rgba(138,90,43,.22);box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 18px 40px -28px rgba(60,40,20,.35)}
+    .alt .pk.rec{background:linear-gradient(160deg,#fff,#F6ECDB);border-color:var(--ch);box-shadow:0 30px 70px -36px rgba(138,90,43,.55)}
+    .alt .bg{color:#fff}
+    .alt .cd::after,.alt .pk::after{background:radial-gradient(300px circle at var(--px,50%) var(--py,50%),rgba(176,122,70,.8),transparent 60%)}
+    .alt .pk .lm,.alt .cd{border-color:rgba(138,90,43,.2)}
+    .alt .hd{background-image:linear-gradient(180deg,#1E1A15 40%,#8A5A2B 140%)}
+    .alt .cst ul{color:var(--tx)}
