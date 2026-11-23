@@ -31,7 +31,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,600&family=Jost:wght@300;400;500&family=Space+Grotesk:wght@500&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="css/estilos.css?v=20261123">
+  <link rel="stylesheet" href="css/estilos.css?v=20261123b">
 </head>
 
 <body>
@@ -58,9 +58,10 @@
     <!-- 01 · PORTADA -->
     <section id="inicio" class="hero">
       <div class="w">
-        <h1>Tu página web y tu WhatsApp, vendiendo por ti.</h1>
+        <p class="hero-eb">Para negocios locales en México</p>
+        <h1>Tu página web y tu WhatsApp, <em>vendiendo por ti.</em></h1>
         <ul class="chips" aria-label="Lo que hacemos"><li>Páginas web</li><li>WhatsApp automático</li><li>Sistemas y apps</li><li>Reportes de ventas</li></ul>
-        <div class="row"><a class="btn bg" href="#cotizador">Arma tu cotización</a><a class="btn" href="#proyectos">Ver proyectos</a></div>
+        <div class="row"><a class="btn bg" href="#cotizador">Arma tu cotización →</a><a class="btn" href="#proyectos">Ver proyectos</a></div>
         <p class="trust">✓ Precio por escrito antes de empezar <span aria-hidden="true">·</span> ✓ 30 días de soporte incluidos</p>
       </div>
       <div class="hx-wrap" id="hxw">
@@ -97,8 +98,7 @@
       <div class="w">
         <span class="eb">03 · Proyectos</span>
         <h2 class="hd" style="margin-bottom:.6rem">Proyectos que puedes abrir y probar.</h2>
-        <p class="mu" style="max-width:46rem;margin-bottom:2.4rem">No son capturas: son demos en vivo que puedes abrir y usar, también desde tu celular.
-          Pruébalas y pídenos una con tu marca.</p>
+        <p class="mu" style="max-width:46rem;margin-bottom:2.4rem">Demos en vivo: ábrelas y úsalas, también desde tu celular.</p>
 
         <article class="cs">
           <div class="cs-v" style="--a:#22d3ee;--b:#070b14;--c:#0e1524" aria-hidden="true">
@@ -112,19 +112,7 @@
             <span class="tag">App · Restaurantes</span>
             <h3>Sistema de comandas e inventario</h3>
             <p class="cs-lead">Del celular del mesero a la pantalla de cocina, sin papel y sin volver a capturar.</p>
-            <dl>
-              <dt>El reto</dt>
-              <dd>En un restaurante la comanda pasa por tres manos: el mesero la escribe, la cocina la interpreta y caja la
-                vuelve a capturar. Cada paso es un error posible, y la ganancia real del día se conoce hasta el cierre.</dd>
-              <dt>La solución</dt>
-              <dd>Tres vistas sincronizadas en dispositivos distintos: <b>Mesero</b> toma el pedido, <b>Cocina</b> lo ve al
-                instante y marca lo que está listo, e <b>Inventario</b> descuenta existencias y calcula la ganancia de cada
-                platillo.</dd>
-              <dt>Qué logra</dt>
-              <dd>Una sola captura por pedido. Ventas cobradas, ganancia neta y comandas activas en tiempo real. Costo,
-                precio y margen por producto a la vista.</dd>
-            </dl>
-            <ul class="cs-s"><li>HTML, CSS y JavaScript</li><li>Sincronización en vivo</li><li>App móvil, de escritorio o web</li></ul>
+            <ul class="cs-b"><li>El mesero toma el pedido en el celular</li><li>Cocina lo ve al instante</li><li>Inventario y ganancia se calculan solos</li></ul>
             <div class="row"><a class="btn bg" href="proyectos/restaurante-comandas.html" target="_blank" rel="noopener">Probar la demo ↗</a><a
                 class="btn" href="#cotizador" data-svc="Sistema o app a la medida">Quiero algo así</a></div>
             <p class="cs-n">Tip: ábrela en dos pestañas, una como Mesero y otra como Cocina.</p>
@@ -143,18 +131,7 @@
             <span class="tag">Web · Producto de IA</span>
             <h3>Aetheris: landing inmersiva</h3>
             <p class="cs-lead">Una página que no describe el producto: lo muestra funcionando mientras haces scroll.</p>
-            <dl>
-              <dt>El reto</dt>
-              <dd>Las herramientas de IA prometen todas lo mismo. Una landing con texto y capturas no explica qué las hace
-                distintas, y el visitante se va antes de entenderlo.</dd>
-              <dt>La solución</dt>
-              <dd>Una narrativa por capítulos guiada por el scroll: portada con partículas animadas, funciones presentadas una
-                a una y una demo en tres pasos (pregunta, razona, entrega) que enseña el producto en acción, sin video.</dd>
-              <dt>Qué logra</dt>
-              <dd>Toda la página empuja hacia una sola acción, “Solicitar acceso”, y el producto se entiende en segundos,
-                también en celular.</dd>
-            </dl>
-            <ul class="cs-s"><li>GSAP + ScrollTrigger</li><li>Canvas 2D</li><li>Tailwind CSS</li></ul>
+            <ul class="cs-b"><li>Explica el producto con animaciones al hacer scroll</li><li>Todo lleva a un solo botón: “Solicitar acceso”</li><li>Se ve igual de bien en celular</li></ul>
             <div class="row"><a class="btn bg" href="proyectos/aetheris-landing.html" target="_blank" rel="noopener">Ver la landing ↗</a><a
                 class="btn" href="#cotizador" data-svc="Web + Sistema ($12,000)">Quiero algo así</a></div>
             <p class="cs-n">Aetheris es una marca de concepto creada por NEXO TECH STUDIOS; sus cifras y testimonios son ilustrativos.</p>
@@ -173,17 +150,7 @@
             <span class="tag">Datos · Tiendas</span>
             <h3>Panel de ventas e inventario</h3>
             <p class="cs-lead">Lo que vendiste, por dónde y qué está por agotarse, en una sola pantalla.</p>
-            <dl>
-              <dt>El reto</dt>
-              <dd>La tienda vende en mostrador, por WhatsApp y en línea, y cada canal anota por su lado. Saber cuánto se ganó
-                en la semana o qué reponer significa juntar libretas y hojas de cálculo.</dd>
-              <dt>La solución</dt>
-              <dd>Un panel que junta todas las ventas: compara contra el periodo anterior, muestra <b>lo más vendido</b>,
-                <b>por qué canal compran</b> y avisa qué productos están bajo el mínimo para pedirlos al proveedor.</dd>
-              <dt>Qué logra</dt>
-              <dd>Decisiones con números del día, no de memoria. Filtra por periodo o categoría y descarga el reporte en un clic.</dd>
-            </dl>
-            <ul class="cs-s"><li>Gráficas interactivas</li><li>Alertas de inventario</li><li>Reporte descargable (CSV)</li></ul>
+            <ul class="cs-b"><li>Junta las ventas de mostrador, WhatsApp y en línea</li><li>Muestra lo más vendido y por qué canal</li><li>Avisa qué productos se están acabando</li></ul>
             <div class="row"><a class="btn bg" href="proyectos/panel-tienda.html" target="_blank" rel="noopener">Probar la demo ↗</a><a
                 class="btn" href="#cotizador" data-svc="Reportes de mi negocio">Quiero algo así</a></div>
             <p class="cs-n">Boutique Lila es una marca de concepto; los datos son de ejemplo.</p>
@@ -202,17 +169,7 @@
             <span class="tag">Automatización e IA · Servicios con cita</span>
             <h3>Asistente de WhatsApp que agenda solo</h3>
             <p class="cs-lead">Responde precios, horarios y ubicación, y agenda citas a cualquier hora.</p>
-            <dl>
-              <dt>El reto</dt>
-              <dd>En una estética o consultorio la mitad de los mensajes son las mismas preguntas. Si nadie contesta rápido,
-                sobre todo de noche, el cliente agenda en otro lado.</dd>
-              <dt>La solución</dt>
-              <dd>Un asistente en el WhatsApp del negocio que contesta al momento, ofrece solo los horarios libres y
-                <b>registra la cita en la agenda</b> con un recordatorio. Si no entiende algo, pasa la conversación a una persona.</dd>
-              <dt>Qué logra</dt>
-              <dd>Ningún mensaje sin respuesta y una agenda que se llena sola, sin citas encimadas.</dd>
-            </dl>
-            <ul class="cs-s"><li>API oficial de WhatsApp</li><li>IA conectada a tu catálogo</li><li>Agenda sincronizada</li></ul>
+            <ul class="cs-b"><li>Contesta precios, horarios y ubicación</li><li>Agenda solo en horarios libres</li><li>Si no entiende, pasa la plática a una persona</li></ul>
             <div class="row"><a class="btn bg" href="proyectos/asistente-whatsapp.html" target="_blank" rel="noopener">Probar la demo ↗</a><a
                 class="btn" href="#cotizador" data-svc="Atención 24/7 por WhatsApp ($18,500)">Quiero algo así</a></div>
             <p class="cs-n">Tip: escríbele como cliente y pídele una cita. En la demo las respuestas siguen un guion.</p>
@@ -361,7 +318,7 @@
         d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
     </svg>WhatsApp</a>
 
-  <script src="js/principal.js?v=20261123"></script>
+  <script src="js/principal.js?v=20261123b"></script>
 
   <script src="js/efectos.js"></script>
   <script src="js/portada.js?v=20261123"></script>

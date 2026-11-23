@@ -3,11 +3,11 @@
     const IC = {web: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M10 13l-2 2 2 2M14 13l2 2-2 2"/>', sw: '<rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18h2"/>', db: '<ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/>', ia: '<rect x="7" y="7" width="10" height="10" rx="1.5"/><path d="M9 3v4M15 3v4M9 17v4M15 17v4M3 9h4M3 15h4M17 9h4M17 15h4"/>'};
 
     /* Servicios: las cuatro con la misma estructura */
-    const SVC = [['web', 'Páginas web', ['Página o catálogo', 'Tienda en línea', 'Lista para celular', 'Visible en Google'], 'Aparece en Google y recibe más mensajes.', '$4,500', 'Página web', SV.web],
-    ['sw', 'Sistemas y apps', ['Inventario', 'Agenda y citas', 'Clientes', 'Usuarios y permisos'], 'Ordena tu negocio sin libretas ni Excel.', '$35,000', 'Sistema a la medida', SV.app],
-    ['db', 'Reportes y datos', ['Ventas del día y del mes', 'Lo que se te acaba', 'Tus mejores clientes', 'Tablero con tus números'], 'Conoce cuánto vendes y qué se te acaba.', '$4,500', 'Reportes de tu negocio', SV.db],
-    ['ia', 'WhatsApp automático e IA', ['Contesta solo', 'Agenda citas', 'Toma pedidos', 'Manda recordatorios'], 'Deja de perder clientes por no contestar.', '$7,900', 'Web + WhatsApp', SV.wab]];
-    $('sv').innerHTML = SVC.map(s => `<article class="cd"><svg viewBox="0 0 24 24" aria-hidden="true">${IC[s[0]]}</svg><h3>${s[1]}</h3><ul class="bl">${s[2].map(x => `<li>${x}</li>`).join('')}</ul><p class="out">${s[3]}</p><div class="pr">Desde<b>${s[4]} MXN</b><span class="mu">${s[5]}</span></div><a class="btn" href="#cotizador" data-svc="${s[6]}">Cotizar</a></article>`).join('');
+    const SVC = [['web', 'Páginas web', 'Aparece en Google y recibe más mensajes.'],
+    ['sw', 'Sistemas y apps', 'Ordena tu negocio sin libretas ni Excel.'],
+    ['db', 'Reportes y datos', 'Conoce cuánto vendes y qué se te acaba.'],
+    ['ia', 'WhatsApp automático e IA', 'Deja de perder clientes por no contestar.']];
+    $('sv').innerHTML = SVC.map(s => `<article class="cd"><svg viewBox="0 0 24 24" aria-hidden="true">${IC[s[0]]}</svg><h3>${s[1]}</h3><p class="out">${s[2]}</p><a class="lk" href="#paquetes">Ver paquetes →</a></article>`).join('');
 
     /* Paquetes: escalera de 4 (cada uno incluye el anterior) + a la medida.
        [nombre, para qué, precio, incluye, ideal para, no incluye, cambios, servicio del cotizador, etiqueta] */
@@ -37,7 +37,7 @@
 
     /* Aparición deslizante al hacer scroll */
     if ('IntersectionObserver' in window && !reduce) {
-      const RV = [['.w > .hd', 'rl'], ['#pkg', 'rr'], ['.sec .eb', ''], ['.g3 > .cd', ''], ['.g4 > .cd', ''], ['.stp > li', ''], ['.note', ''], ['.fq details', ''], ['.q', ''], ['.ct', ''], ['#contacto .t', ''], ['.cs:not(.cs-alt) > .cs-v', 'rl'], ['.cs-alt > .cs-v', 'rr'], ['.cs:not(.cs-alt) > .cs-t', 'rr'], ['.cs-alt > .cs-t', 'rl'], ['.hx-cap', '']], els = [];
+      const RV = [['.w > .hd', 'rl'], ['#pkg', 'rr'], ['#pkm', ''], ['.cs-b li', ''], ['.cst > .cd', ''], ['.sec .eb', ''], ['.g3 > .cd', ''], ['.g4 > .cd', ''], ['.stp > li', ''], ['.note', ''], ['.fq details', ''], ['.q', ''], ['.ct', ''], ['#contacto .t', ''], ['.cs:not(.cs-alt) > .cs-v', 'rl'], ['.cs-alt > .cs-v', 'rr'], ['.cs:not(.cs-alt) > .cs-t', 'rr'], ['.cs-alt > .cs-t', 'rl'], ['.hx-cap', '']], els = [];
       RV.forEach(([q, c]) => document.querySelectorAll(q).forEach(e => {e.classList.add('rv'); if (c) e.classList.add(c); els.push(e)}));
       const io = new IntersectionObserver(es => {let k = 0; es.forEach(en => {if (!en.isIntersecting) return; const t = en.target, dl = Math.min(k++, 4) * 90; t.style.setProperty('--dl', dl + 'ms'); t.classList.add('in'); io.unobserve(t); setTimeout(() => {t.classList.remove('rv', 'rl', 'rr', 'in'); t.style.removeProperty('--dl')}, 1200 + dl)})}, {threshold: .12, rootMargin: '0px 0px -6% 0px'});
       els.forEach(e => io.observe(e))
