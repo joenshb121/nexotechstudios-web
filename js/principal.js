@@ -37,7 +37,8 @@
 
     /* Aparición deslizante al hacer scroll */
     if ('IntersectionObserver' in window && !reduce) {
-      const RV = [['.w > .hd', 'rl'], ['#pkg', 'rr'], ['#pkm', ''], ['.cs-b li', ''], ['.cst > .cd', ''], ['.sec .eb', ''], ['.g3 > .cd', ''], ['.g4 > .cd', ''], ['.stp > li', ''], ['.note', ''], ['.fq details', ''], ['.q', ''], ['.ct', ''], ['#contacto .t', ''], ['.cs:not(.cs-alt) > .cs-v', 'rl'], ['.cs-alt > .cs-v', 'rr'], ['.cs:not(.cs-alt) > .cs-t', 'rr'], ['.cs-alt > .cs-t', 'rl'], ['.hx-cap', '']], els = [];
+      const SD = CSS.supports('animation-timeline: view()');  // si el navegador anima con el scroll, no duplicar
+      const RV = [...(SD ? [] : [['.ba-a', 'rl'], ['.ba-d', 'rr'], ['.w > .hd', 'rl']]), ['#pkg', 'rr'], ['#pkm', ''], ['.cs-b li', ''], ['.cst > .cd', ''], ['.sec .eb', ''], ['.g3 > .cd', ''], ['.g4 > .cd', ''], ['.stp > li', ''], ['.note', ''], ['.fq details', ''], ['.q', ''], ['.ct', ''], ['#contacto .t', ''], ['.cs:not(.cs-alt) > .cs-v', 'rl'], ['.cs-alt > .cs-v', 'rr'], ['.cs:not(.cs-alt) > .cs-t', 'rr'], ['.cs-alt > .cs-t', 'rl'], ['.hx-cap', '']], els = [];
       RV.forEach(([q, c]) => document.querySelectorAll(q).forEach(e => {e.classList.add('rv'); if (c) e.classList.add(c); els.push(e)}));
       const io = new IntersectionObserver(es => {let k = 0; es.forEach(en => {if (!en.isIntersecting) return; const t = en.target, dl = Math.min(k++, 4) * 90; t.style.setProperty('--dl', dl + 'ms'); t.classList.add('in'); io.unobserve(t); setTimeout(() => {t.classList.remove('rv', 'rl', 'rr', 'in'); t.style.removeProperty('--dl')}, 1200 + dl)})}, {threshold: .12, rootMargin: '0px 0px -6% 0px'});
       els.forEach(e => io.observe(e))
