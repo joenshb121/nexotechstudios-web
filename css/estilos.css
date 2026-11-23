@@ -552,6 +552,10 @@
       grid-template-columns: repeat(auto-fit, minmax(270px, 1fr))
     }
 
+    /* La escalera de 4 paquetes: 4 en línea, 2x2 o 1 columna (nunca uno huérfano) */
+    @media(min-width:600px) { #pkg { grid-template-columns: repeat(2, 1fr) } }
+    @media(min-width:1040px) { #pkg { grid-template-columns: repeat(4, 1fr) } #pkg .pk h3 { font-size: 1.6rem } }
+
     .pk {
       border: 1px solid rgba(216, 195, 160, .22);
       border-radius: 22px;
