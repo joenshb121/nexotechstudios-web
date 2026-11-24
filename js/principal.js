@@ -29,7 +29,7 @@
     /* Cotizador */
     const sel = $('qs'); sel.innerHTML = Object.values(SV).map(v => `<option>${v}</option>`).join('');
     function msg() {return [`Hola, soy ${$('qn').value.trim() || '(mi nombre)'}.`, `Quiero cotizar: ${sel.value}.`, $('qb').value.trim() && `Mi negocio: ${$('qb').value.trim()}.`, $('qd').value.trim() && `Detalles: ${$('qd').value.trim()}`, '¿Me compartes una propuesta?'].filter(Boolean).join('\n')}
-    function build() {$('qa').href = 'https://wa.me/525564331354?text=' + encodeURIComponent(msg()); $('qe').href = 'mailto:business@nexotechstudios.com?subject=' + encodeURIComponent('Cotización: ' + sel.value) + '&body=' + encodeURIComponent(msg())}
+    function build() {$('qa').href = 'https://wa.me/525574361184?text=' + encodeURIComponent(msg()); $('qe').href = 'mailto:business@nexotechstudios.com?subject=' + encodeURIComponent('Cotización: ' + sel.value) + '&body=' + encodeURIComponent(msg())}
     document.querySelectorAll('.q input,.q textarea,.q select').forEach(e => e.addEventListener('input', build)); build();
     [$('qa'), $('qe')].forEach(a => a.addEventListener('click', e => {const m = $('qm'); if ($('qn').value.trim().length < 2) {e.preventDefault(); m.textContent = 'Escribe tu nombre para saber con quién hablar.'; m.style.color = '#E0907A'; $('qn').focus(); return } build(); m.style.color = 'var(--ok)'; m.textContent = 'Abriendo tu cotización lista para enviar.'}));
     document.addEventListener('click', e => {const a = e.target.closest('[data-svc]'); if (a) {sel.value = a.dataset.svc; build()} });
