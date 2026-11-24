@@ -829,6 +829,11 @@
       color: #fff
     }
 
+    .fl a.soc {
+      gap: .45rem;
+      text-decoration: none
+    }
+
     netlify-drawer,
     [id*="netlify"],
     [class*="netlify-drawer"] {
