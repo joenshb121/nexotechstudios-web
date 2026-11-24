@@ -241,7 +241,7 @@
       overflow: visible
     }
 
-    /* Logo: con mouse se ve solo la X; al pasar el cursor (o con teclado) la X avanza y aparece NEXO. En celular siempre completo. */
+    /* Logo: en computadora arriba se ve solo la X; al bajar (scroll) la X avanza y aparece NEXO. En celular siempre completo. */
     .lg-ne, .lg-o, .lg-x {
       transition: transform .6s cubic-bezier(.2, .8, .2, 1), opacity .45s ease;
       transform-box: fill-box;
@@ -249,10 +249,10 @@
     }
 
     @media (hover:hover) {
-      nav .lg:not(:hover):not(:focus-visible) .lg-x { transform: translateX(-267.8px) rotate(-90deg) }
-      nav .lg:not(:hover):not(:focus-visible) .lg-ne { transform: translateX(-40px); opacity: 0 }
-      nav .lg:not(:hover):not(:focus-visible) .lg-o { transform: translateX(-80px); opacity: 0 }
-      nav .lg:hover .lg-o, nav .lg:focus-visible .lg-o { transition-delay: .12s }
+      html:not(.scr) nav .lg .lg-x { transform: translateX(-267.8px) rotate(-90deg) }
+      html:not(.scr) nav .lg .lg-ne { transform: translateX(-40px); opacity: 0 }
+      html:not(.scr) nav .lg .lg-o { transform: translateX(-80px); opacity: 0 }
+      html.scr nav .lg .lg-o { transition-delay: .12s }
     }
 
     @media (prefers-reduced-motion:reduce) {

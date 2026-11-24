@@ -55,3 +55,6 @@
       R.addEventListener('pointerleave', reset);
     })();
   
+
+    /* Logo: se despliega NEXO al bajar de la portada */
+    (() => {const f = () => document.documentElement.classList.toggle('scr', scrollY > 40); addEventListener('scroll', f, {passive: true}); f()})();
