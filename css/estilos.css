@@ -1330,6 +1330,7 @@
     .ba-a{background:#141210;border:1px dashed rgba(154,148,136,.35);filter:grayscale(1);opacity:.85}
     .ba-d{background:linear-gradient(150deg,#241b11,#15120e);border:1px solid var(--ch);box-shadow:0 30px 70px -40px rgba(214,160,92,.7)}
     .ba-d>b{font:500 1.05rem Jost;color:var(--ch)}
+    .ba-a>b{font:500 1.05rem Jost;color:var(--mu)}
     .ba-l{font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mu)}
     .ba-d .ba-l{color:var(--ch)}
     .ba-x{font-size:2rem;color:var(--ch)}
